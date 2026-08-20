@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alunos</title>
+</head>
+<body>
+    <h1>Alunos cadastrados</h1>
+
+    <a href="/alunos/novo">Cadastrar novo aluno</a>
+    <br><br>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Matrícula</th>
+            <th>Idade</th>
+            <th>Média</th>
+            <th>Situação</th>
+            <th>Ações</th>
+        </tr>
+
+        <tr th:each="aluno: ${alunos}">
+            <td th:text="${aluno.id}"></td>
+            <td th:text="${aluno.nome}"></td>
+            <td th:text="${aluno.email}"></td>
+            <td th:text="${aluno.matricula}"></td>
+            <td th:text="${aluno.idade}"></td>
+            <td th:text="${aluno.media}"></td>
+            <td th:text="${aluno.situacao}"></td>
+            <td>
+                <a th:href="@{/alunos/{id}(id=${aluno.id})}">Detalhes</a>
+            </td>
+        </tr>
+    </table>
+
+    <a href="/">Voltar</a>
+</body>
+</html>

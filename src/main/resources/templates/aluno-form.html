@@ -3,31 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Novo Aluno</title>
+    <title>Novo aluno | Sistema Acadêmico</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body>
-    <h1>Cadastrar aluno</h1>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">SA</span>
+          <span>Sistema Acadêmico</span>
+        </a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a href="/alunos">Alunos</a>
+          <a href="/alunos/novo">Novo aluno</a>
+        </nav>
+      </header>
 
-    <form action="/alunos" method="post">
-      <label for="nome">Nome:</label>
-      <input id="nome" type="text" name="nome" required />
-      <br /><br />
+      <main>
+        <section class="page-heading">
+          <div class="page-heading-copy">
+            <p class="eyebrow">Cadastro</p>
+            <h1>Novo aluno</h1>
+            <p class="page-description">Preencha os dados para adicionar um aluno ao sistema.</p>
+          </div>
+        </section>
 
-      <label for="email">E-mail:</label>
-      <input id="email" type="email" name="email" required />
-      <br /><br />
+        <form class="surface form-card" action="/alunos" method="post">
+          <div class="form-grid">
+            <div class="form-field form-field-full">
+              <label for="nome">Nome completo</label>
+              <input id="nome" type="text" name="nome" autocomplete="name" required />
+            </div>
 
-      <label for="matricula">Matrícula:</label>
-      <input id="matricula" type="text" name="matricula" required />
-      <br /><br />
+            <div class="form-field form-field-full">
+              <label for="email">E-mail</label>
+              <input id="email" type="email" name="email" autocomplete="email" required />
+            </div>
 
-      <label for="idade">Idade:</label>
-      <input id="idade" type="number" name="idade" min="0" required />
-      <br /><br />
+            <div class="form-field">
+              <label for="matricula">Matrícula</label>
+              <input id="matricula" type="text" name="matricula" required />
+            </div>
 
-      <button type="submit">Cadastrar</button>
-    </form>
-    <p><a href="/alunos">Voltar para alunos</a></p>
+            <div class="form-field">
+              <label for="idade">Idade</label>
+              <input id="idade" type="number" name="idade" min="0" required />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit">Cadastrar aluno</button>
+            <a class="button button-secondary" href="/alunos">Cancelar</a>
+          </div>
+        </form>
+      </main>
+    </div>
   </body>
 </html>

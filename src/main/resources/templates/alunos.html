@@ -1,51 +1,77 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alunos</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
-    <h1>Alunos cadastrados</h1>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alunos | Sistema Acadêmico</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">SA</span>
+          <span>Sistema Acadêmico</span>
+        </a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a href="/alunos">Alunos</a>
+          <a href="/alunos/novo">Novo aluno</a>
+        </nav>
+      </header>
 
-    <a href="/alunos/novo">Cadastrar novo aluno</a>
-    <br><br>
+      <main>
+        <section class="page-heading">
+          <div class="page-heading-copy">
+            <p class="eyebrow">Gestão acadêmica</p>
+            <h1>Alunos cadastrados</h1>
+            <p class="page-description">Consulte os dados e o desempenho dos alunos.</p>
+          </div>
+          <a class="button" href="/alunos/novo">Cadastrar novo aluno</a>
+        </section>
 
-    <p th:if="${#lists.isEmpty(alunos)}">Nenhum aluno cadastrado ainda.</p>
+        <section class="surface" aria-label="Lista de alunos">
+          <div class="empty-state" th:if="${#lists.isEmpty(alunos)}">
+            <h2>Nenhum aluno cadastrado</h2>
+            <p>Cadastre o primeiro aluno para começar a acompanhar o desempenho acadêmico.</p>
+          </div>
 
-    <div class="table-wrapper" th:unless="${#lists.isEmpty(alunos)}">
-        <table>
-            <caption>Alunos cadastrados</caption>
-            <thead>
+          <div class="table-wrapper" th:unless="${#lists.isEmpty(alunos)}">
+            <table>
+              <caption>Alunos cadastrados</caption>
+              <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">E-mail</th>
-                    <th scope="col">Matrícula</th>
-                    <th scope="col">Idade</th>
-                    <th scope="col">Média</th>
-                    <th scope="col">Situação</th>
-                    <th scope="col">Ações</th>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">E-mail</th>
+                  <th scope="col">Matrícula</th>
+                  <th scope="col">Idade</th>
+                  <th scope="col">Média</th>
+                  <th scope="col">Situação</th>
+                  <th scope="col">Ações</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr th:each="aluno: ${alunos}">
-                    <td th:text="${aluno.id}"></td>
-                    <td th:text="${aluno.nome}"></td>
-                    <td th:text="${aluno.email}"></td>
-                    <td th:text="${aluno.matricula}"></td>
-                    <td th:text="${aluno.idade}"></td>
-                    <td th:text="${aluno.media}"></td>
-                    <td th:text="${aluno.situacao}"></td>
-                    <td>
-                        <a th:href="@{/alunos/{id}(id=${aluno.id})}">Detalhes</a>
-                    </td>
+              </thead>
+              <tbody>
+                <tr th:each="aluno : ${alunos}">
+                  <td th:text="${aluno.id}"></td>
+                  <td th:text="${aluno.nome}"></td>
+                  <td th:text="${aluno.email}"></td>
+                  <td th:text="${aluno.matricula}"></td>
+                  <td th:text="${aluno.idade}"></td>
+                  <td th:text="${aluno.media}"></td>
+                  <td th:text="${aluno.situacao}"></td>
+                  <td>
+                    <a th:href="@{/alunos/{id}(id=${aluno.id})}">Detalhes</a>
+                  </td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-    <a href="/">Voltar</a>
-</body>
+        <div class="page-actions">
+          <a class="button button-secondary" href="/">Voltar ao início</a>
+        </div>
+      </main>
+    </div>
+  </body>
 </html>

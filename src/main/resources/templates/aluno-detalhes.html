@@ -3,45 +3,103 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detalhes do Aluno</title>
+    <title>Detalhes do aluno | Sistema Acadêmico</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body>
-    <h1>Detalhes do aluno</h1>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">SA</span>
+          <span>Sistema Acadêmico</span>
+        </a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a href="/alunos">Alunos</a>
+          <a href="/alunos/novo">Novo aluno</a>
+        </nav>
+      </header>
 
-    <p>ID: <span th:text="${aluno.id}"></span></p>
-    <p>Nome: <span th:text="${aluno.nome}"></span></p>
-    <p>E-mail: <span th:text="${aluno.email}"></span></p>
-    <p>Matrícula: <span th:text="${aluno.matricula}"></span></p>
-    <p>Idade: <span th:text="${aluno.idade}"></span></p>
-    <p>Média: <span th:text="${aluno.media}"></span></p>
-    <p>Situação: <span th:text="${aluno.situacao}"></span></p>
+      <main>
+        <section class="page-heading">
+          <div class="page-heading-copy">
+            <p class="eyebrow">Perfil acadêmico</p>
+            <h1>Detalhes do aluno</h1>
+            <p class="page-description" th:text="${aluno.nome}"></p>
+          </div>
+        </section>
 
-    <h2>Notas</h2>
-    <a th:href="@{/alunos/{id}/notas/nova(id=${aluno.id})}">Cadastrar nota</a>
-    <br /><br />
+        <section class="surface student-summary" aria-labelledby="student-data-title">
+          <h2 id="student-data-title">Dados do aluno</h2>
+          <dl class="detail-grid">
+            <div class="detail-item">
+              <dt>ID</dt>
+              <dd th:text="${aluno.id}"></dd>
+            </div>
+            <div class="detail-item">
+              <dt>Nome</dt>
+              <dd th:text="${aluno.nome}"></dd>
+            </div>
+            <div class="detail-item">
+              <dt>E-mail</dt>
+              <dd th:text="${aluno.email}"></dd>
+            </div>
+            <div class="detail-item">
+              <dt>Matrícula</dt>
+              <dd th:text="${aluno.matricula}"></dd>
+            </div>
+            <div class="detail-item">
+              <dt>Idade</dt>
+              <dd th:text="${aluno.idade}"></dd>
+            </div>
+            <div class="detail-item">
+              <dt>Média</dt>
+              <dd th:text="${aluno.media}"></dd>
+            </div>
+            <div class="detail-item">
+              <dt>Situação</dt>
+              <dd th:text="${aluno.situacao}"></dd>
+            </div>
+          </dl>
+        </section>
 
-    <p th:if="${#lists.isEmpty(aluno.notas)}">Este aluno ainda não possui notas.</p>
+        <section class="page-heading">
+          <div class="page-heading-copy">
+            <p class="eyebrow">Desempenho</p>
+            <h2>Notas</h2>
+            <p class="page-description">Acompanhe as avaliações cadastradas para este aluno.</p>
+          </div>
+          <a class="button" th:href="@{/alunos/{id}/notas/nova(id=${aluno.id})}">Cadastrar nota</a>
+        </section>
 
-    <div class="table-wrapper" th:unless="${#lists.isEmpty(aluno.notas)}">
-      <table>
-        <caption>Notas do aluno</caption>
-        <thead>
-          <tr>
-            <th scope="col">Descrição</th>
-            <th scope="col">Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="nota:${aluno.notas}">
-            <td th:text="${nota.descricao}"></td>
-            <td th:text="${nota.valor}"></td>
-          </tr>
-        </tbody>
-      </table>
+        <section class="surface" aria-label="Notas do aluno">
+          <div class="empty-state" th:if="${#lists.isEmpty(aluno.notas)}">
+            <h2>Nenhuma nota cadastrada</h2>
+            <p>As avaliações deste aluno aparecerão aqui.</p>
+          </div>
+
+          <div class="table-wrapper" th:unless="${#lists.isEmpty(aluno.notas)}">
+            <table>
+              <caption>Notas do aluno</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="nota : ${aluno.notas}">
+                  <td th:text="${nota.descricao}"></td>
+                  <td th:text="${nota.valor}"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="page-actions">
+          <a class="button button-secondary" href="/alunos">Voltar para alunos</a>
+        </div>
+      </main>
     </div>
-
-    <br />
-    <a href="/alunos">Voltar para alunos</a>
   </body>
 </html>

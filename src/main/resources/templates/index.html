@@ -7,13 +7,38 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body>
-    <h1>Sistema Acadêmico</h1>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">SA</span>
+          <span>Sistema Acadêmico</span>
+        </a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a href="/alunos">Alunos</a>
+          <a href="/alunos/novo">Novo aluno</a>
+        </nav>
+      </header>
 
-    <p>Mini sistema para cadastro de alunos e notas.</p>
+      <main class="hero">
+        <section class="hero-copy">
+          <p class="eyebrow">Gestão acadêmica</p>
+          <h1>Acompanhe cada etapa da jornada dos seus alunos.</h1>
+          <p class="page-description">
+            Organize cadastros, consulte informações e mantenha as notas em um só lugar.
+          </p>
+          <div class="page-actions">
+            <a class="button" href="/alunos">Ver alunos</a>
+            <a class="button button-secondary" href="/alunos/novo">Cadastrar aluno</a>
+          </div>
+        </section>
 
-    <ul>
-      <li><a href="/alunos">Ver alunos</a></li>
-      <li><a href="/alunos/novo">Cadastrar aluno</a></li>
-    </ul>
+        <aside class="hero-card" aria-label="Visão geral do sistema">
+          <div class="hero-card-mark" aria-hidden="true">SA</div>
+          <p class="hero-card-label">Tudo em ordem</p>
+          <h2>Informação clara para decisões melhores.</h2>
+          <p>Consulte o desempenho e os dados dos alunos com praticidade.</p>
+        </aside>
+      </main>
+    </div>
   </body>
 </html>

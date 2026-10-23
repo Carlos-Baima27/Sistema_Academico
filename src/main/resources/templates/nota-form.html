@@ -3,27 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nova Nota</title>
+    <title>Nova nota | Sistema Acadêmico</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body>
-    <h1>Cadastrar nota</h1>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">SA</span>
+          <span>Sistema Acadêmico</span>
+        </a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a href="/alunos">Alunos</a>
+          <a href="/alunos/novo">Novo aluno</a>
+        </nav>
+      </header>
 
-    <p>Aluno: <span th:text="${aluno.nome}"></span></p>
+      <main>
+        <section class="page-heading">
+          <div class="page-heading-copy">
+            <p class="eyebrow">Desempenho acadêmico</p>
+            <h1>Cadastrar nota</h1>
+            <p class="page-description">
+              Aluno: <strong th:text="${aluno.nome}"></strong>
+            </p>
+          </div>
+        </section>
 
-    <form th:action="@{/alunos/{id}/notas(id=${aluno.id})}" method="post">
-      <label for="descricao">Descrição:</label>
-      <input id="descricao" type="text" name="descricao" required />
-      <br /><br />
+        <form class="surface form-card" th:action="@{/alunos/{id}/notas(id=${aluno.id})}" method="post">
+          <div class="form-grid">
+            <div class="form-field form-field-full">
+              <label for="descricao">Descrição da avaliação</label>
+              <input id="descricao" type="text" name="descricao" required />
+            </div>
 
-      <label for="valor">Valor (0 a 10):</label>
-      <input id="valor" type="number" step="0.1" min="0" max="10" name="valor" required />
-      <br /><br />
+            <div class="form-field">
+              <label for="valor">Nota (de 0 a 10)</label>
+              <input id="valor" type="number" step="0.1" min="0" max="10" name="valor" required />
+            </div>
+          </div>
 
-      <button type="submit">Cadastrar</button>
-    </form>
-
-    <br />
-    <a th:href="@{/alunos/{id}(id=${aluno.id})}">Voltar</a>
+          <div class="form-actions">
+            <button type="submit">Cadastrar nota</button>
+            <a class="button button-secondary" th:href="@{/alunos/{id}(id=${aluno.id})}">Cancelar</a>
+          </div>
+        </form>
+      </main>
+    </div>
   </body>
 </html>

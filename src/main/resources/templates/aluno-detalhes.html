@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detalhes do Aluno</title>
-</head>
-<body>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
     <h1>Detalhes do aluno</h1>
 
     <p>ID: <span th:text="${aluno.id}"></span></p>
@@ -18,21 +19,29 @@
 
     <h2>Notas</h2>
     <a th:href="@{/alunos/{id}/notas/nova(id=${aluno.id})}">Cadastrar nota</a>
-    <br><br>
+    <br /><br />
 
-    <table border="1">
-        <tr>
-            <th>Descrição</th>
-            <th>Valor</th>
-        </tr>
+    <p th:if="${#lists.isEmpty(aluno.notas)}">Este aluno ainda não possui notas.</p>
 
-        <tr th:each="nota:${aluno.notas}">
+    <div class="table-wrapper" th:unless="${#lists.isEmpty(aluno.notas)}">
+      <table>
+        <caption>Notas do aluno</caption>
+        <thead>
+          <tr>
+            <th scope="col">Descrição</th>
+            <th scope="col">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="nota:${aluno.notas}">
             <td th:text="${nota.descricao}"></td>
             <td th:text="${nota.valor}"></td>
-        </tr>
-    </table>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <br>
+    <br />
     <a href="/alunos">Voltar para alunos</a>
-</body>
+  </body>
 </html>

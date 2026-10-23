@@ -1,0 +1,58 @@
+body {
+  margin: 2rem auto;
+  max-width: 960px;
+  padding: 0 1rem;
+  color: #1f2937;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: #1457a6;
+}
+
+label {
+  display: inline-block;
+  min-width: 6rem;
+}
+
+input,
+button {
+  font: inherit;
+}
+
+input {
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+}
+
+.table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+caption {
+  padding: 0.5rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+th,
+td {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+th {
+  background-color: #f1f5f9;
+}

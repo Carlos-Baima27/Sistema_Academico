@@ -1,31 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Novo Aluno</title>
-</head>
-<body>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
     <h1>Cadastrar aluno</h1>
 
     <form action="/alunos" method="post">
-        <label>Nome:</label>
-        <input type="text" name="nome">
-        <br><br>
+      <label for="nome">Nome:</label>
+      <input id="nome" type="text" name="nome" required />
+      <br /><br />
 
-        <label>E-mail:</label>
-        <input type="text" name="email">
-        <br><br>
+      <label for="email">E-mail:</label>
+      <input id="email" type="email" name="email" required />
+      <br /><br />
 
-        <label>Matrícula:</label>
-        <input type="text" name="matricula">
-        <br><br>
+      <label for="matricula">Matrícula:</label>
+      <input id="matricula" type="text" name="matricula" required />
+      <br /><br />
 
-        <label>Idade:</label>
-        <input type="number" name="idade">
-        <br><br>
+      <label for="idade">Idade:</label>
+      <input id="idade" type="number" name="idade" min="0" required />
+      <br /><br />
 
-        <button type="submit">Cadastrar</button>
+      <button type="submit">Cadastrar</button>
     </form>
-</body>
+    <p><a href="/alunos">Voltar para alunos</a></p>
+  </body>
 </html>

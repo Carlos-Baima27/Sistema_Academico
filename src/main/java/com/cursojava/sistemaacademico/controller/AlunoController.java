@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cursojava.sistemaacademico.model.Aluno;
 import com.cursojava.sistemaacademico.service.AlunoService;
@@ -95,6 +96,25 @@ public class AlunoController {
 
         if (alunoAtualizado == null) {
             return "redirect:/alunos";
+        }
+
+        return "redirect:/alunos";
+    }
+
+    @PostMapping("/alunos/{id}/excluir")
+    public String excluirAluno(@PathVariable Long id,
+            @RequestParam(required = false) String nome,
+            RedirectAttributes redirectAttributes) {
+        if (alunoService.excluirAluno(id)) {
+            redirectAttributes.addFlashAttribute("mensagemSucesso",
+                    "Aluno excluído com sucesso.");
+        } else {
+            redirectAttributes.addFlashAttribute("mensagemErro",
+                    "Não foi possível excluir: aluno não encontrado.");
+        }
+
+        if (nome != null && !nome.isBlank()) {
+            redirectAttributes.addAttribute("nome", nome);
         }
 
         return "redirect:/alunos";

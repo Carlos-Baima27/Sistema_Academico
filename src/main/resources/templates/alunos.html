@@ -30,6 +30,11 @@
         </section>
 
         <section class="surface" aria-label="Lista de alunos">
+          <div class="feedback feedback-success" role="status"
+            th:if="${mensagemSucesso}" th:text="${mensagemSucesso}"></div>
+          <div class="feedback feedback-error" role="alert"
+            th:if="${mensagemErro}" th:text="${mensagemErro}"></div>
+
           <form class="search-form" method="get" action="/alunos">
             <div class="form-field form-field-full">
               <label for="pesquisa-nome">Pesquisar por nome</label>
@@ -84,6 +89,16 @@
                   <td>
                     <a th:href="@{/alunos/{id}(id=${aluno.id})}">Detalhes</a>
                     <a th:href="@{/alunos/{id}/editar(id=${aluno.id})}">Editar</a>
+                    <form class="inline-form" method="post"
+                      th:action="@{/alunos/{id}/excluir(id=${aluno.id})}"
+                      onsubmit="return confirm('Tem certeza de que deseja excluir este aluno? Esta ação também removerá as notas associadas.');">
+                      <input type="hidden" name="nome" th:value="${nomePesquisado}"
+                        th:if="${pesquisando}" />
+                      <button class="button button-danger" type="submit"
+                        th:attr="aria-label='Excluir aluno ' + ${aluno.nome}">
+                        Excluir
+                      </button>
+                    </form>
                   </td>
                 </tr>
               </tbody>

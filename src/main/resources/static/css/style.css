@@ -85,6 +85,40 @@ button:hover,
   box-shadow: none;
 }
 
+.button-danger {
+  color: #ffffff;
+  background: #b42318;
+}
+
+.button-danger:hover {
+  color: #ffffff;
+  background: #912018;
+}
+
+.inline-form {
+  display: inline-flex;
+  margin-left: 0.5rem;
+}
+
+.feedback {
+  margin: 1rem 1.5rem 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid;
+  border-radius: 0.65rem;
+}
+
+.feedback-success {
+  border-color: #a7d7b8;
+  color: #1e6242;
+  background: #effaf2;
+}
+
+.feedback-error {
+  border-color: #f0b4ae;
+  color: #912018;
+  background: #fff3f1;
+}
+
 :focus-visible {
   outline: 3px solid rgba(40, 122, 84, 0.35);
   outline-offset: 3px;

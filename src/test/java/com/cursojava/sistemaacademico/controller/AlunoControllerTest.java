@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
@@ -66,6 +67,11 @@ class AlunoControllerTest {
                 aluno.setIdade(dados.getIdade());
 
                 return aluno;
+            }
+
+            @Override
+            public boolean excluirAluno(Long id) {
+                return AlunoControllerTest.this.alunos.remove(id) != null;
             }
         };
         mockMvc = MockMvcBuilders.standaloneSetup(new AlunoController(alunoService))
@@ -170,6 +176,31 @@ class AlunoControllerTest {
                         .param("matricula", "A099")
                         .param("idade", "19"))
                 .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
+    }
+
+    @Test
+    void exclusaoDeAlunoExistenteConfirmaESegueNaPesquisaAtual() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos/1/excluir")
+                        .param("nome", "Ana"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemSucesso",
+                        "Aluno excluído com sucesso."))
+                .andReturn();
+
+        assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
+        assertEquals("Ana", resultado.getModelAndView().getModel().get("nome"));
+        assertFalse(alunos.containsKey(ana.getId()));
+    }
+
+    @Test
+    void exclusaoDeAlunoInexistenteInformaErroSemSimularSucesso() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos/99/excluir"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemErro",
+                        "Não foi possível excluir: aluno não encontrado."))
                 .andReturn();
 
         assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());

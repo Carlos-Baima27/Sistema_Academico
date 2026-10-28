@@ -26,9 +26,9 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 3 — Exclusão de alunos (RF-04)
 
-- [ ] T014 [PRD:RF-04] Criar uma rota web `POST` para excluir aluno em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`, reutilizando `AlunoService.excluirAluno` e tratando registros inexistentes.
-- [ ] T015 [PRD:RF-04] Adicionar ação de exclusão à listagem em `src/main/resources/templates/alunos.html`, usando envio `POST` e solicitando confirmação antes de enviar.
-- [ ] T016 [PRD:RF-04] Exibir confirmação de sucesso ou erro após exclusão e assegurar que a listagem seja atualizada.
+- [x] T014 [PRD:RF-04] Criar uma rota web `POST` para excluir aluno em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`, reutilizando `AlunoService.excluirAluno` e tratando registros inexistentes.
+- [x] T015 [PRD:RF-04] Adicionar ação de exclusão à listagem em `src/main/resources/templates/alunos.html`, usando envio `POST` e solicitando confirmação antes de enviar.
+- [x] T016 [PRD:RF-04] Exibir confirmação de sucesso ou erro após exclusão e assegurar que a listagem seja atualizada.
 - [ ] T017 [PRD:RF-04, QL-02] Testar exclusão confirmada, cancelamento no navegador, ID inexistente e comportamento das notas associadas.
 
 ## Etapa 4 — Validação e retorno dos formulários (RF-07)
@@ -92,4 +92,5 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - Os testes registram os limites atuais sem alterá-los: idade maior que zero e nota de 0 a 10, inclusive.
 - As tarefas condicionais dependem das decisões indicadas em T003 e T027.
 - Os limites citados devem ser confirmados na implementação existente antes de serem alterados; este backlog não propõe mudar regras acadêmicas.
+- T017: exclusão confirmada, ID inexistente e exclusão em cascata foram validados por testes automatizados. O cancelamento da confirmação não pôde ser exercitado no navegador porque a sessão já ativa em `localhost:8080` ainda serve a versão antiga; ela não foi reiniciada para evitar interrompê-la.
 - Marcar uma tarefa como concluída somente após implementar e verificar seu resultado.

@@ -18,11 +18,11 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 2 — Edição de alunos (RF-03)
 
-- [ ] T009 [PRD:RF-03] Criar a rota `GET /alunos/{id}/editar` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`, carregando o aluno e tratando ID inexistente sem apresentar sucesso.
-- [ ] T010 [PRD:RF-03] Adaptar `src/main/resources/templates/aluno-form.html` para funcionar como formulário de cadastro e edição, preenchendo os valores atuais e usando título, ação e botão adequados a cada modo.
-- [ ] T011 [PRD:RF-03, RF-07] Criar a rota `POST /alunos/{id}` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java` para validar, atualizar e redirecionar após sucesso.
-- [ ] T012 [PRD:RF-03] Adicionar links para editar na listagem `src/main/resources/templates/alunos.html` e nos detalhes `src/main/resources/templates/aluno-detalhes.html`.
-- [ ] T013 [PRD:RF-03, QL-02] Testar edição bem-sucedida, dados inválidos e tentativa de editar aluno inexistente.
+- [x] T009 [PRD:RF-03] Criar a rota `GET /alunos/{id}/editar` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`, carregando o aluno e tratando ID inexistente sem apresentar sucesso.
+- [x] T010 [PRD:RF-03] Adaptar `src/main/resources/templates/aluno-form.html` para funcionar como formulário de cadastro e edição, preenchendo os valores atuais e usando título, ação e botão adequados a cada modo.
+- [x] T011 [PRD:RF-03, RF-07] Criar a rota `POST /alunos/{id}` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java` para validar, atualizar e redirecionar após sucesso.
+- [x] T012 [PRD:RF-03] Adicionar links para editar na listagem `src/main/resources/templates/alunos.html` e nos detalhes `src/main/resources/templates/aluno-detalhes.html`.
+- [x] T013 [PRD:RF-03, QL-02] Testar edição bem-sucedida, dados inválidos e tentativa de editar aluno inexistente.
 
 ## Etapa 3 — Exclusão de alunos (RF-04)
 

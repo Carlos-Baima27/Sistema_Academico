@@ -1,0 +1,174 @@
+metadata:
+  generated: "2026-10-27"
+  source_tasks: ".docs/task.md"
+  last_updated: "2026-10-27"
+
+summary:
+  total_tasks: 5
+  completed_tasks: 5
+  in_progress_tasks: 0
+  pending_tasks: 0
+  completion_percentage: 100.0
+
+tasks:
+  - task_id: "T009"
+    description: "Criar GET /alunos/{id}/editar e tratar ID inexistente."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+          changes:
+            - line_start: 58
+              line_end: 69
+              change_type: "modified"
+              description: "Carrega dados atuais e redireciona se o aluno não existe."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -q test"
+        passed: 12
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "GET de edição também foi verificado no runtime."
+    upstream_trace:
+      plan_item: "2. Ações de gerenciamento na listagem"
+      requirements: ["RF-03"]
+      full_trace: "RF-03 -> Plano 2 -> T009 -> AlunoController.java"
+  - task_id: "T010"
+    description: "Adaptar o formulário para cadastro e edição."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/main/resources/templates/aluno-form.html"
+          changes:
+            - line_start: 6
+              line_end: 73
+              change_type: "modified"
+              description: "Adiciona os modos de cadastro/edição, valores atuais e apresentação de erro."
+        - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+          changes:
+            - line_start: 40
+              line_end: 44
+              change_type: "modified"
+              description: "Prepara o modelo de dados para o formulário de cadastro."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -q test"
+        passed: 12
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "Templates Thymeleaf renderizados no smoke test."
+    upstream_trace:
+      plan_item: "2. Ações de gerenciamento na listagem"
+      requirements: ["RF-03"]
+      full_trace: "RF-03 -> Plano 2 -> T010 -> aluno-form.html"
+  - task_id: "T011"
+    description: "Criar POST /alunos/{id} com validação e atualização."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+          changes:
+            - line_start: 72
+              line_end: 103
+              change_type: "modified"
+              description: "Valida os dados com AlunoService.dadosInvalidos e redireciona após sucesso."
+        - file: "src/main/resources/templates/aluno-form.html"
+          changes:
+            - line_start: 39
+              line_end: 39
+              change_type: "modified"
+              description: "Exibe mensagem quando os dados submetidos não são válidos."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -q test"
+        passed: 12
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "Atualização, rejeição de dados inválidos e ID inexistente verificados."
+    upstream_trace:
+      plan_item: "2. Ações de gerenciamento na listagem"
+      requirements: ["RF-03", "RF-07"]
+      full_trace: "RF-03 -> Plano 2 -> T011 -> AlunoController.java"
+  - task_id: "T012"
+    description: "Adicionar links de edição na listagem e nos detalhes."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/main/resources/templates/alunos.html"
+          changes:
+            - line_start: 86
+              line_end: 86
+              change_type: "modified"
+              description: "Adiciona link de edição por aluno."
+        - file: "src/main/resources/templates/aluno-detalhes.html"
+          changes:
+            - line_start: 29
+              line_end: 29
+              change_type: "modified"
+              description: "Adiciona ação de edição na página de detalhes."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -q test"
+        passed: 12
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "Os dois links foram confirmados no runtime."
+    upstream_trace:
+      plan_item: "2. Ações de gerenciamento na listagem"
+      requirements: ["RF-03"]
+      full_trace: "RF-03 -> Plano 2 -> T012 -> templates de listagem e detalhes"
+  - task_id: "T013"
+    description: "Testar sucesso, dados inválidos e aluno inexistente."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
+          changes:
+            - line_start: 99
+              line_end: 177
+              change_type: "modified"
+              description: "Adiciona testes do fluxo de edição."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -q test"
+        passed: 12
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "A suíte completa passou; o pacote também foi construído com sucesso."
+    upstream_trace:
+      plan_item: "2. Ações de gerenciamento na listagem"
+      requirements: ["RF-03", "QL-02"]
+      full_trace: "RF-03 -> Plano 2 -> T013 -> AlunoControllerTest"
+
+pending_tasks: []
+untracked_changes: []
+traceability_chain:
+  - chain_id: "TRACE-RF03-EDIT"
+    requirement: "RF-03"
+    plan_phase: "Etapa 2"
+    plan_item: "Ações de gerenciamento na listagem"
+    tasks: ["T009", "T010", "T011", "T012", "T013"]
+    files:
+      - "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+      - "src/main/resources/templates/aluno-form.html"
+      - "src/main/resources/templates/alunos.html"
+      - "src/main/resources/templates/aluno-detalhes.html"
+      - "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
+    status: "complete"
+
+validation:
+  passed: true
+  errors: []
+  warnings:
+    - "O banco H2 padrão estava bloqueado pelo processo já ativo na porta 8080; a suíte foi executada com H2 em memória."
+  blocking_issues: []

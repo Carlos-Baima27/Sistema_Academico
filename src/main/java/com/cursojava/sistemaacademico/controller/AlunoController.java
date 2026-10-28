@@ -38,7 +38,10 @@ public class AlunoController {
     }
 
     @GetMapping("/alunos/novo")
-    public String formularioAluno() {
+    public String formularioAluno(Model model) {
+        model.addAttribute("aluno", new Aluno(null, "", "", "", 0));
+        model.addAttribute("edicao", false);
+        model.addAttribute("idadeCampo", "");
         return "aluno-form";
     }
 
@@ -48,6 +51,51 @@ public class AlunoController {
             @RequestParam String matricula,
             @RequestParam int idade) {
         alunoService.cadastrarAluno(nome, email, matricula, idade);
+
+        return "redirect:/alunos";
+    }
+
+    @GetMapping("/alunos/{id}/editar")
+    public String formularioEdicaoAluno(@PathVariable Long id, Model model) {
+        Aluno aluno = alunoService.buscarPorId(id);
+
+        if (aluno == null) {
+            return "redirect:/alunos";
+        }
+
+        model.addAttribute("aluno", aluno);
+        model.addAttribute("edicao", true);
+        model.addAttribute("idadeCampo", aluno.getIdade());
+        return "aluno-form";
+    }
+
+    @PostMapping("/alunos/{id}")
+    public String atualizarAluno(@PathVariable Long id,
+            @RequestParam String nome,
+            @RequestParam String email,
+            @RequestParam String matricula,
+            @RequestParam int idade,
+            Model model) {
+        if (alunoService.buscarPorId(id) == null) {
+            return "redirect:/alunos";
+        }
+
+        Aluno dados = new Aluno(id, nome, email, matricula, idade);
+
+        if (alunoService.dadosInvalidos(dados)) {
+            model.addAttribute("aluno", dados);
+            model.addAttribute("edicao", true);
+            model.addAttribute("idadeCampo", idade);
+            model.addAttribute("erro",
+                    "Informe nome, e-mail e matrícula e uma idade maior que zero.");
+            return "aluno-form";
+        }
+
+        Aluno alunoAtualizado = alunoService.atualizarAluno(id, dados);
+
+        if (alunoAtualizado == null) {
+            return "redirect:/alunos";
+        }
 
         return "redirect:/alunos";
     }

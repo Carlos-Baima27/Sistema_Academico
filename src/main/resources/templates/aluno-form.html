@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Novo aluno | Sistema Acadêmico</title>
+    <title th:text="${edicao} ? 'Editar aluno | Sistema Acadêmico' : 'Novo aluno | Sistema Acadêmico'">
+      Novo aluno | Sistema Acadêmico
+    </title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body>
@@ -22,37 +24,49 @@
       <main>
         <section class="page-heading">
           <div class="page-heading-copy">
-            <p class="eyebrow">Cadastro</p>
-            <h1>Novo aluno</h1>
-            <p class="page-description">Preencha os dados para adicionar um aluno ao sistema.</p>
+            <p class="eyebrow" th:text="${edicao} ? 'Edição' : 'Cadastro'">Cadastro</p>
+            <h1 th:text="${edicao} ? 'Editar aluno' : 'Novo aluno'">Novo aluno</h1>
+            <p class="page-description"
+              th:text="${edicao} ? 'Atualize os dados do aluno.' : 'Preencha os dados para adicionar um aluno ao sistema.'">
+              Preencha os dados para adicionar um aluno ao sistema.
+            </p>
           </div>
         </section>
 
-        <form class="surface form-card" action="/alunos" method="post">
+        <form class="surface form-card"
+          th:action="${edicao} ? @{/alunos/{id}(id=${aluno.id})} : @{/alunos}"
+          action="/alunos" method="post">
+          <p class="form-error" role="alert" th:if="${erro != null}" th:text="${erro}"></p>
           <div class="form-grid">
             <div class="form-field form-field-full">
               <label for="nome">Nome completo</label>
-              <input id="nome" type="text" name="nome" autocomplete="name" required />
+              <input id="nome" type="text" name="nome" autocomplete="name"
+                th:value="${aluno.nome}" required />
             </div>
 
             <div class="form-field form-field-full">
               <label for="email">E-mail</label>
-              <input id="email" type="email" name="email" autocomplete="email" required />
+              <input id="email" type="email" name="email" autocomplete="email"
+                th:value="${aluno.email}" required />
             </div>
 
             <div class="form-field">
               <label for="matricula">Matrícula</label>
-              <input id="matricula" type="text" name="matricula" required />
+              <input id="matricula" type="text" name="matricula"
+                th:value="${aluno.matricula}" required />
             </div>
 
             <div class="form-field">
               <label for="idade">Idade</label>
-              <input id="idade" type="number" name="idade" min="0" required />
+              <input id="idade" type="number" name="idade" min="0"
+                th:value="${idadeCampo}" required />
             </div>
           </div>
 
           <div class="form-actions">
-            <button type="submit">Cadastrar aluno</button>
+            <button type="submit" th:text="${edicao} ? 'Salvar alterações' : 'Cadastrar aluno'">
+              Cadastrar aluno
+            </button>
             <a class="button button-secondary" href="/alunos">Cancelar</a>
           </div>
         </form>

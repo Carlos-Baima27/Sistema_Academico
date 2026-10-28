@@ -26,6 +26,7 @@
             <h1>Detalhes do aluno</h1>
             <p class="page-description" th:text="${aluno.nome}"></p>
           </div>
+          <a class="button" th:href="@{/alunos/{id}/editar(id=${aluno.id})}">Editar aluno</a>
         </section>
 
         <section class="surface student-summary" aria-labelledby="student-data-title">

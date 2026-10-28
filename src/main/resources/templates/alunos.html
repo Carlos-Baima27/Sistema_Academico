@@ -83,6 +83,7 @@
                   <td th:text="${aluno.situacao}"></td>
                   <td>
                     <a th:href="@{/alunos/{id}(id=${aluno.id})}">Detalhes</a>
+                    <a th:href="@{/alunos/{id}/editar(id=${aluno.id})}">Editar</a>
                   </td>
                 </tr>
               </tbody>

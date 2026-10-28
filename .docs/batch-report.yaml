@@ -1,0 +1,122 @@
+batch_id: "stage-2-editing"
+completed_tasks: ["T009", "T010", "T011", "T012", "T013"]
+blocked_tasks: []
+files_changed:
+  T009:
+    - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+      change_type: "modified"
+      description: "Adicionada a rota GET de edição com redirecionamento para aluno inexistente."
+  T010:
+    - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+      change_type: "modified"
+      description: "Cadastro e edição compartilham o formulário com valores e atributos adequados."
+    - file: "src/main/resources/templates/aluno-form.html"
+      change_type: "modified"
+      description: "Formulário alterna título, ação, botão e valores para cadastro/edição."
+  T011:
+    - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+      change_type: "modified"
+      description: "Adicionada a rota POST que valida, atualiza e redireciona após sucesso."
+    - file: "src/main/resources/templates/aluno-form.html"
+      change_type: "modified"
+      description: "Falhas de validação são exibidas e os valores informados permanecem no formulário."
+  T012:
+    - file: "src/main/resources/templates/alunos.html"
+      change_type: "modified"
+      description: "Adicionado link para editar em cada linha da listagem."
+    - file: "src/main/resources/templates/aluno-detalhes.html"
+      change_type: "modified"
+      description: "Adicionado link para editar na página de detalhes."
+  T013:
+    - file: "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
+      change_type: "modified"
+      description: "Testes cobrem carregamento, atualização válida, dados inválidos e IDs inexistentes."
+upstream_artifacts_consumed:
+  T009:
+    - artifact: ".docs/task.md"
+      used_for: "Escopo e comportamento esperado da rota GET de edição."
+    - artifact: ".docs/prd.md"
+      used_for: "Critérios de aceite de RF-03."
+  T010:
+    - artifact: ".docs/plan.md"
+      used_for: "Reutilização do formulário de aluno para edição."
+  T011:
+    - artifact: ".docs/prd.md"
+      used_for: "RF-03 e validação consistente com as regras existentes."
+  T012:
+    - artifact: ".docs/task.md"
+      used_for: "Superfícies de navegação exigidas para iniciar a edição."
+  T013:
+    - artifact: ".docs/prd.md"
+      used_for: "Critérios de teste para sucesso, invalidade e aluno inexistente."
+evidence_mapping:
+  T009:
+    - upstream: ".docs/prd.md#RF-03"
+      output: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java#formularioEdicaoAluno"
+      evidence: "AlunoControllerTest#formularioDeEdicaoCarregaAlunoExistente e formularioDeEdicaoRedirecionaQuandoAlunoNaoExiste"
+  T010:
+    - upstream: ".docs/plan.md#Melhorias propostas"
+      output: "src/main/resources/templates/aluno-form.html"
+      evidence: "Runtime smoke test verificou título, valores, ação e renderização do formulário de edição."
+  T011:
+    - upstream: ".docs/prd.md#RF-03"
+      output: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java#atualizarAluno"
+      evidence: "AlunoControllerTest#atualizaAlunoComDadosValidos, dadosInvalidosNaoAtualizamAlunoERetornamFormulario e atualizacaoDeAlunoInexistenteRedirecionaSemSimularSucesso"
+  T012:
+    - upstream: ".docs/task.md#Etapa-2"
+      output: "src/main/resources/templates/alunos.html e src/main/resources/templates/aluno-detalhes.html"
+      evidence: "Runtime smoke test confirmou ambos os links."
+  T013:
+    - upstream: ".docs/prd.md#RF-03"
+      output: "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
+      evidence: "Suíte completa: 12 testes passaram, 0 falharam; teste de fluxo em runtime passou."
+traceability:
+  - requirement: "RF-03"
+    plan_item: "2. Ações de gerenciamento na listagem"
+    task: "T009"
+    files: ["src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"]
+    status: "completed"
+  - requirement: "RF-03"
+    plan_item: "2. Ações de gerenciamento na listagem"
+    task: "T010"
+    files: ["src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java", "src/main/resources/templates/aluno-form.html"]
+    status: "completed"
+  - requirement: "RF-03, RF-07"
+    plan_item: "2. Ações de gerenciamento na listagem"
+    task: "T011"
+    files: ["src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java", "src/main/resources/templates/aluno-form.html"]
+    status: "completed"
+  - requirement: "RF-03"
+    plan_item: "2. Ações de gerenciamento na listagem"
+    task: "T012"
+    files: ["src/main/resources/templates/alunos.html", "src/main/resources/templates/aluno-detalhes.html"]
+    status: "completed"
+  - requirement: "RF-03, QL-02"
+    plan_item: "2. Ações de gerenciamento na listagem"
+    task: "T013"
+    files: ["src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"]
+    status: "completed"
+protocol_violation: false
+errors: []
+warnings:
+  - severity: "LOW"
+    message: "A execução padrão da suíte encontrou o H2 em arquivo bloqueado pelo processo que já atendia a porta 8080. A suíte completa e o build passaram ao usar banco H2 em memória; os dados do processo existente não foram alterados."
+test_results:
+  T013:
+    command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -q test"
+    passed: 12
+    failed: 0
+    skipped: 0
+    failures: []
+build:
+  command: ".\\mvnw.cmd -q -DskipTests package"
+  passed: true
+endpoint_probes:
+  - method: "GET"
+    path: "/alunos/{id}/editar"
+    status: 200
+    result: "PASS; formulário Thymeleaf renderizado com campos atuais e ação correspondente."
+  - method: "POST"
+    path: "/alunos/{id}"
+    status: 200
+    result: "PASS após redirecionamento; atualização persistida no H2 em memória."

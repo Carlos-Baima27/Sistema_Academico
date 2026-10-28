@@ -30,12 +30,34 @@
         </section>
 
         <section class="surface" aria-label="Lista de alunos">
-          <div class="empty-state" th:if="${#lists.isEmpty(alunos)}">
+          <form class="search-form" method="get" action="/alunos">
+            <div class="form-field form-field-full">
+              <label for="pesquisa-nome">Pesquisar por nome</label>
+              <input id="pesquisa-nome" name="nome" type="search"
+                th:value="${nomePesquisado}" />
+            </div>
+            <div class="form-actions">
+              <button class="button" type="submit">Pesquisar</button>
+              <a class="button button-secondary" href="/alunos" th:if="${pesquisando}">
+                Limpar pesquisa
+              </a>
+            </div>
+          </form>
+
+          <div class="empty-state" th:if="${#lists.isEmpty(alunos) and pesquisando}">
+            <h2>Nenhum aluno encontrado</h2>
+            <p>
+              Não encontramos alunos com o nome
+              <strong th:text="${nomePesquisado}"></strong>.
+            </p>
+          </div>
+
+          <div class="empty-state" th:if="${#lists.isEmpty(alunos) and !pesquisando}">
             <h2>Nenhum aluno cadastrado</h2>
             <p>Cadastre o primeiro aluno para começar a acompanhar o desempenho acadêmico.</p>
           </div>
 
-          <div class="table-wrapper" th:unless="${#lists.isEmpty(alunos)}">
+          <div class="table-wrapper" th:if="${!#lists.isEmpty(alunos)}">
             <table>
               <caption>Alunos cadastrados</caption>
               <thead>

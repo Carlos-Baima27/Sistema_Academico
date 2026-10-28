@@ -10,11 +10,11 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 1 — Busca de alunos (RF-01)
 
-- [ ] T004 [PRD:RF-01] Atualizar a rota `GET /alunos` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java` para aceitar uma pesquisa opcional por nome e enviar a consulta e os resultados à página.
-- [ ] T005 [PRD:RF-01] Reutilizar `AlunoService.buscarPorNome` em `src/main/java/com/cursojava/sistemaacademico/service/AlunoService.java`, tratando pesquisa vazia conforme o comportamento definido para a listagem completa.
-- [ ] T006 [PRD:RF-01] Adicionar campo de pesquisa, botão para pesquisar e ação para limpar a consulta em `src/main/resources/templates/alunos.html`.
-- [ ] T007 [PRD:RF-01] Diferenciar em `src/main/resources/templates/alunos.html` a lista sem alunos cadastrados da pesquisa sem resultados, preservando o texto pesquisado.
-- [ ] T008 [PRD:RF-01, QL-02] Criar ou atualizar testes do controlador para pesquisa com resultados, sem resultados, consulta vazia e preservação do termo.
+- [x] T004 [PRD:RF-01] Atualizar a rota `GET /alunos` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java` para aceitar uma pesquisa opcional por nome e enviar a consulta e os resultados à página.
+- [x] T005 [PRD:RF-01] Reutilizar `AlunoService.buscarPorNome` em `src/main/java/com/cursojava/sistemaacademico/service/AlunoService.java`, tratando pesquisa vazia conforme o comportamento definido para a listagem completa.
+- [x] T006 [PRD:RF-01] Adicionar campo de pesquisa, botão para pesquisar e ação para limpar a consulta em `src/main/resources/templates/alunos.html`.
+- [x] T007 [PRD:RF-01] Diferenciar em `src/main/resources/templates/alunos.html` a lista sem alunos cadastrados da pesquisa sem resultados, preservando o texto pesquisado.
+- [x] T008 [PRD:RF-01, QL-02] Criar ou atualizar testes do controlador para pesquisa com resultados, sem resultados, consulta vazia e preservação do termo.
 
 ## Etapa 2 — Edição de alunos (RF-03)
 

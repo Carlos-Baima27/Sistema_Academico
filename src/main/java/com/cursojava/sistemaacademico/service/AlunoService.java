@@ -81,8 +81,12 @@ public class AlunoService {
     }
 
     public List<Aluno> buscarPorNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            return listarTodos();
+        }
+
         List<Aluno> encontrados = new ArrayList<>();
-        String nomeProcurado = nome.toLowerCase();
+        String nomeProcurado = nome.trim().toLowerCase();
 
         for (Aluno aluno : listarTodos()) {
             if (aluno.getNome().toLowerCase()

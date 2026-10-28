@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.cursojava.sistemaacademico.model.Aluno;
+import com.cursojava.sistemaacademico.model.Nota;
 import com.cursojava.sistemaacademico.service.AlunoService;
 
 class AlunoControllerTest {
@@ -26,6 +27,9 @@ class AlunoControllerTest {
     private final Aluno ana = new Aluno(1L, "Ana Silva", "ana@example.com", "A001", 20);
     private final Aluno bruno = new Aluno(2L, "Bruno Costa", "bruno@example.com", "A002", 21);
     private final Map<Long, Aluno> alunos = new HashMap<>();
+    private boolean falharCadastroAluno;
+    private boolean falharAtualizacao;
+    private boolean falharCadastroNota;
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -41,6 +45,9 @@ class AlunoControllerTest {
         alunos.clear();
         alunos.put(ana.getId(), ana);
         alunos.put(bruno.getId(), bruno);
+        falharCadastroAluno = false;
+        falharAtualizacao = false;
+        falharCadastroNota = false;
         List<Aluno> alunos = List.of(ana, bruno);
         AlunoService alunoService = new AlunoService(null, null) {
             @Override
@@ -57,7 +64,7 @@ class AlunoControllerTest {
             public Aluno atualizarAluno(Long id, Aluno dados) {
                 Aluno aluno = AlunoControllerTest.this.alunos.get(id);
 
-                if (aluno == null) {
+                if (aluno == null || falharAtualizacao) {
                     return null;
                 }
 
@@ -70,6 +77,35 @@ class AlunoControllerTest {
             }
 
             @Override
+            public Aluno cadastrarAluno(String nome, String email,
+                    String matricula, int idade) {
+                if (falharCadastroAluno) {
+                    return null;
+                }
+
+                Aluno aluno = new Aluno(3L, nome, email, matricula, idade);
+                AlunoControllerTest.this.alunos.put(aluno.getId(), aluno);
+                return aluno;
+            }
+
+            @Override
+            public Nota cadastrarNota(Long alunoId, String descricao, double valor) {
+                if (falharCadastroNota) {
+                    return null;
+                }
+
+                Aluno aluno = AlunoControllerTest.this.alunos.get(alunoId);
+
+                if (aluno == null) {
+                    return null;
+                }
+
+                Nota nota = new Nota(descricao, valor);
+                aluno.adicionarNota(nota);
+                return nota;
+            }
+
+            @Override
             public boolean excluirAluno(Long id) {
                 return AlunoControllerTest.this.alunos.remove(id) != null;
             }
@@ -78,6 +114,83 @@ class AlunoControllerTest {
                 .setViewResolvers((viewName, locale) -> (model, request, response) -> {
                 })
                 .build();
+    }
+
+    @Test
+    void cadastroAlunoValidoConfirmaSucesso() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos")
+                        .param("nome", "Carla Souza")
+                        .param("email", "carla@example.com")
+                        .param("matricula", "A003")
+                        .param("idade", "19"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemSucesso",
+                        "Aluno cadastrado com sucesso."))
+                .andReturn();
+
+        assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
+        assertEquals("Carla Souza", alunos.get(3L).getNome());
+    }
+
+    @Test
+    void dadosInvalidosNoCadastroPreservamValoresERetornamErrosDosCampos() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos")
+                        .param("nome", "")
+                        .param("email", "")
+                        .param("matricula", "")
+                        .param("idade", "0"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<?, ?> erros = (Map<?, ?>) resultado.getModelAndView().getModel().get("erros");
+        Aluno dados = (Aluno) resultado.getModelAndView().getModel().get("aluno");
+
+        assertEquals("aluno-form", resultado.getModelAndView().getViewName());
+        assertTrue(erros.containsKey("nome"));
+        assertTrue(erros.containsKey("email"));
+        assertTrue(erros.containsKey("matricula"));
+        assertTrue(erros.containsKey("idade"));
+        assertEquals("", dados.getNome());
+        assertEquals("", dados.getEmail());
+        assertEquals("", dados.getMatricula());
+        assertEquals("0", resultado.getModelAndView().getModel().get("idadeCampo"));
+        assertEquals(2, alunos.size());
+    }
+
+    @Test
+    void idadeEmFormatoInvalidoRetornaFormularioPreservandoValor() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos")
+                        .param("nome", "Carla Souza")
+                        .param("email", "carla@example.com")
+                        .param("matricula", "A003")
+                        .param("idade", "dezenove"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<?, ?> erros = (Map<?, ?>) resultado.getModelAndView().getModel().get("erros");
+
+        assertEquals("aluno-form", resultado.getModelAndView().getViewName());
+        assertTrue(erros.containsKey("idade"));
+        assertEquals("dezenove", resultado.getModelAndView().getModel().get("idadeCampo"));
+        assertEquals(2, alunos.size());
+    }
+
+    @Test
+    void falhaNoCadastroDeAlunoInformaErroSemSucesso() throws Exception {
+        falharCadastroAluno = true;
+
+        MvcResult resultado = mockMvc.perform(post("/alunos")
+                        .param("nome", "Carla Souza")
+                        .param("email", "carla@example.com")
+                        .param("matricula", "A003")
+                        .param("idade", "19"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemErro",
+                        "Não foi possível cadastrar o aluno."))
+                .andExpect(flash().attributeCount(1))
+                .andReturn();
+
+        assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
     }
 
     @Test
@@ -142,6 +255,8 @@ class AlunoControllerTest {
                         .param("matricula", "A010")
                         .param("idade", "22"))
                 .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemSucesso",
+                        "Aluno atualizado com sucesso."))
                 .andReturn();
 
         assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
@@ -163,9 +278,32 @@ class AlunoControllerTest {
 
         assertEquals("aluno-form", resultado.getModelAndView().getViewName());
         assertTrue((Boolean) resultado.getModelAndView().getModel().get("edicao"));
-        assertTrue(resultado.getModelAndView().getModel().containsKey("erro"));
+        assertTrue(((Map<?, ?>) resultado.getModelAndView().getModel().get("erros"))
+                .containsKey("nome"));
+        assertTrue(((Map<?, ?>) resultado.getModelAndView().getModel().get("erros"))
+                .containsKey("idade"));
+        assertEquals("0", resultado.getModelAndView().getModel().get("idadeCampo"));
         assertEquals("Ana Silva", ana.getNome());
         assertEquals(20, ana.getIdade());
+    }
+
+    @Test
+    void falhaNaAtualizacaoInformaErroSemSucesso() throws Exception {
+        falharAtualizacao = true;
+
+        MvcResult resultado = mockMvc.perform(post("/alunos/1")
+                        .param("nome", "Ana Souza")
+                        .param("email", "ana.souza@example.com")
+                        .param("matricula", "A010")
+                        .param("idade", "22"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemErro",
+                        "Não foi possível atualizar o aluno."))
+                .andExpect(flash().attributeCount(1))
+                .andReturn();
+
+        assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
+        assertEquals("Ana Silva", ana.getNome());
     }
 
     @Test
@@ -176,9 +314,94 @@ class AlunoControllerTest {
                         .param("matricula", "A099")
                         .param("idade", "19"))
                 .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemErro",
+                        "Não foi possível atualizar: aluno não encontrado."))
+                .andExpect(flash().attributeCount(1))
                 .andReturn();
 
         assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
+    }
+
+    @Test
+    void notaInvalidaRetornaFormularioComErrosEValoresPreservados() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos/1/notas")
+                        .param("descricao", "")
+                        .param("valor", "10.1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<?, ?> erros = (Map<?, ?>) resultado.getModelAndView().getModel().get("erros");
+
+        assertEquals("nota-form", resultado.getModelAndView().getViewName());
+        assertTrue(erros.containsKey("descricao"));
+        assertTrue(erros.containsKey("valor"));
+        assertEquals("", resultado.getModelAndView().getModel().get("descricao"));
+        assertEquals("10.1", resultado.getModelAndView().getModel().get("valorCampo"));
+        assertTrue(ana.getNotas().isEmpty());
+    }
+
+    @Test
+    void notaValidaConfirmaSucessoERedirecionaAosDetalhes() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos/1/notas")
+                        .param("descricao", "Prova")
+                        .param("valor", "8.5"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemSucesso",
+                        "Nota cadastrada com sucesso."))
+                .andReturn();
+
+        assertEquals("redirect:/alunos/1", resultado.getModelAndView().getViewName());
+        assertEquals(1, ana.getNotas().size());
+        assertEquals("Prova", ana.getNotas().get(0).getDescricao());
+        assertEquals(8.5, ana.getNotas().get(0).getValor());
+    }
+
+    @Test
+    void notaComValorInvalidoRetornaFormularioPreservandoDescricao() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos/1/notas")
+                        .param("descricao", "Prova final")
+                        .param("valor", "invalido"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals("nota-form", resultado.getModelAndView().getViewName());
+        assertEquals("Prova final", resultado.getModelAndView().getModel().get("descricao"));
+        assertEquals("invalido", resultado.getModelAndView().getModel().get("valorCampo"));
+        assertTrue(((Map<?, ?>) resultado.getModelAndView().getModel().get("erros"))
+                .containsKey("valor"));
+        assertTrue(ana.getNotas().isEmpty());
+    }
+
+    @Test
+    void falhaNoCadastroDeNotaInformaErroSemSucesso() throws Exception {
+        falharCadastroNota = true;
+
+        MvcResult resultado = mockMvc.perform(post("/alunos/1/notas")
+                        .param("descricao", "Prova")
+                        .param("valor", "8.5"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemErro",
+                        "Não foi possível cadastrar a nota."))
+                .andExpect(flash().attributeCount(1))
+                .andReturn();
+
+        assertEquals("redirect:/alunos/1", resultado.getModelAndView().getViewName());
+        assertTrue(ana.getNotas().isEmpty());
+    }
+
+    @Test
+    void notaDeAlunoInexistenteInformaErroSemSimularSucesso() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos/99/notas")
+                        .param("descricao", "Prova")
+                        .param("valor", "8.5"))
+                .andExpect(status().isOk())
+                .andExpect(flash().attribute("mensagemErro",
+                        "Não foi possível cadastrar a nota: aluno não encontrado."))
+                .andExpect(flash().attributeCount(1))
+                .andReturn();
+
+        assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
+        assertTrue(ana.getNotas().isEmpty());
     }
 
     @Test

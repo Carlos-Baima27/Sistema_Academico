@@ -33,12 +33,12 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 4 — Validação e retorno dos formulários (RF-07)
 
-- [ ] T018 [PRD:RF-07, QL-01] Aplicar ao cadastro web de aluno as validações de `AlunoService.dadosInvalidos` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`.
-- [ ] T019 [PRD:RF-07, QL-01] Aplicar ao cadastro web de nota as validações de `AlunoService.notaInvalida` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`.
-- [ ] T020 [PRD:RF-07] Ajustar os atributos HTML de idade, e-mail e nota em `src/main/resources/templates/aluno-form.html` e `src/main/resources/templates/nota-form.html` para refletir os limites definidos pelo serviço.
-- [ ] T021 [PRD:RF-07] Exibir mensagens junto aos campos inválidos e preservar os valores informados ao retornar aos formulários `src/main/resources/templates/aluno-form.html` e `src/main/resources/templates/nota-form.html`.
-- [ ] T022 [PRD:RF-03, RF-07] Apresentar mensagens de sucesso e erro nos fluxos de cadastro, edição e nota sem informar sucesso quando houver falha.
-- [ ] T023 [PRD:RF-07, QL-02] Testar validações, mensagens e ausência de falsos retornos de sucesso nos formulários de aluno e nota.
+- [x] T018 [PRD:RF-07, QL-01] Aplicar ao cadastro web de aluno as validações de `AlunoService.dadosInvalidos` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`.
+- [x] T019 [PRD:RF-07, QL-01] Aplicar ao cadastro web de nota as validações de `AlunoService.notaInvalida` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`.
+- [x] T020 [PRD:RF-07] Ajustar os atributos HTML de idade, e-mail e nota em `src/main/resources/templates/aluno-form.html` e `src/main/resources/templates/nota-form.html` para refletir os limites definidos pelo serviço.
+- [x] T021 [PRD:RF-07] Exibir mensagens junto aos campos inválidos e preservar os valores informados ao retornar aos formulários `src/main/resources/templates/aluno-form.html` e `src/main/resources/templates/nota-form.html`.
+- [x] T022 [PRD:RF-03, RF-07] Apresentar mensagens de sucesso e erro nos fluxos de cadastro, edição e nota sem informar sucesso quando houver falha.
+- [x] T023 [PRD:RF-07, QL-02] Testar validações, mensagens e ausência de falsos retornos de sucesso nos formulários de aluno e nota.
 
 ## Etapa 5 — Destaque do desempenho acadêmico (RF-06)
 

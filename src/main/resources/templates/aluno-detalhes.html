@@ -20,6 +20,11 @@
       </header>
 
       <main>
+        <div class="feedback feedback-success" role="status"
+          th:if="${mensagemSucesso}" th:text="${mensagemSucesso}"></div>
+        <div class="feedback feedback-error" role="alert"
+          th:if="${mensagemErro}" th:text="${mensagemErro}"></div>
+
         <section class="page-heading">
           <div class="page-heading-copy">
             <p class="eyebrow">Perfil acadêmico</p>

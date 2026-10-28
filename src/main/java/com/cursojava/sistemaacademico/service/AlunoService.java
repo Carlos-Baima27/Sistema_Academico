@@ -54,11 +54,8 @@ public class AlunoService {
             return null;
         }
 
-        if (!alunoRepository.existsById(alunoId)) {
-            return null;
-        }
-
         Nota nota = new Nota(descricao, valor);
+        aluno.adicionarNota(nota);
 
         return notaRepository.save(nota);
     }
@@ -76,6 +73,7 @@ public class AlunoService {
     public boolean notaInvalida(Nota nota) {
         return nota.getDescricao() == null
                 || nota.getDescricao().isBlank()
+                || !Double.isFinite(nota.getValor())
                 || nota.getValor() < 0.0
                 || nota.getValor() > 10.0;
     }

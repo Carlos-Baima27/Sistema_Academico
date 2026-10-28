@@ -25,6 +25,7 @@ class AlunoServiceTest {
         assertFalse(alunoService.notaInvalida(new Nota("Prova", 10.0)));
         assertTrue(alunoService.notaInvalida(new Nota("Prova", -0.01)));
         assertTrue(alunoService.notaInvalida(new Nota("Prova", 10.01)));
+        assertTrue(alunoService.notaInvalida(new Nota("Prova", Double.NaN)));
     }
 
     private Aluno alunoComIdade(int idade) {

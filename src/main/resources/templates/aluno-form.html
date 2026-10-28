@@ -36,30 +36,49 @@
         <form class="surface form-card"
           th:action="${edicao} ? @{/alunos/{id}(id=${aluno.id})} : @{/alunos}"
           action="/alunos" method="post">
-          <p class="form-error" role="alert" th:if="${erro != null}" th:text="${erro}"></p>
           <div class="form-grid">
             <div class="form-field form-field-full">
               <label for="nome">Nome completo</label>
               <input id="nome" type="text" name="nome" autocomplete="name"
-                th:value="${aluno.nome}" required />
+                th:value="${aluno.nome}" required
+                th:attr="aria-invalid=${erros != null and erros.containsKey('nome')},
+                  aria-describedby=${erros != null and erros.containsKey('nome') ? 'nome-error' : null}" />
+              <p class="field-error" id="nome-error" role="alert"
+                th:if="${erros != null and erros.containsKey('nome')}"
+                th:text="${erros['nome']}"></p>
             </div>
 
             <div class="form-field form-field-full">
               <label for="email">E-mail</label>
               <input id="email" type="email" name="email" autocomplete="email"
-                th:value="${aluno.email}" required />
+                th:value="${aluno.email}" required
+                th:attr="aria-invalid=${erros != null and erros.containsKey('email')},
+                  aria-describedby=${erros != null and erros.containsKey('email') ? 'email-error' : null}" />
+              <p class="field-error" id="email-error" role="alert"
+                th:if="${erros != null and erros.containsKey('email')}"
+                th:text="${erros['email']}"></p>
             </div>
 
             <div class="form-field">
               <label for="matricula">Matrícula</label>
               <input id="matricula" type="text" name="matricula"
-                th:value="${aluno.matricula}" required />
+                th:value="${aluno.matricula}" required
+                th:attr="aria-invalid=${erros != null and erros.containsKey('matricula')},
+                  aria-describedby=${erros != null and erros.containsKey('matricula') ? 'matricula-error' : null}" />
+              <p class="field-error" id="matricula-error" role="alert"
+                th:if="${erros != null and erros.containsKey('matricula')}"
+                th:text="${erros['matricula']}"></p>
             </div>
 
             <div class="form-field">
               <label for="idade">Idade</label>
-              <input id="idade" type="number" name="idade" min="0"
-                th:value="${idadeCampo}" required />
+              <input id="idade" type="number" name="idade" min="1"
+                th:value="${idadeCampo}" required
+                th:attr="aria-invalid=${erros != null and erros.containsKey('idade')},
+                  aria-describedby=${erros != null and erros.containsKey('idade') ? 'idade-error' : null}" />
+              <p class="field-error" id="idade-error" role="alert"
+                th:if="${erros != null and erros.containsKey('idade')}"
+                th:text="${erros['idade']}"></p>
             </div>
           </div>
 

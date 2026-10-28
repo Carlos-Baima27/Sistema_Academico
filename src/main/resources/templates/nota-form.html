@@ -34,12 +34,24 @@
           <div class="form-grid">
             <div class="form-field form-field-full">
               <label for="descricao">Descrição da avaliação</label>
-              <input id="descricao" type="text" name="descricao" required />
+              <input id="descricao" type="text" name="descricao"
+                th:value="${descricao}" required
+                th:attr="aria-invalid=${erros != null and erros.containsKey('descricao')},
+                  aria-describedby=${erros != null and erros.containsKey('descricao') ? 'descricao-error' : null}" />
+              <p class="field-error" id="descricao-error" role="alert"
+                th:if="${erros != null and erros.containsKey('descricao')}"
+                th:text="${erros['descricao']}"></p>
             </div>
 
             <div class="form-field">
               <label for="valor">Nota (de 0 a 10)</label>
-              <input id="valor" type="number" step="0.1" min="0" max="10" name="valor" required />
+              <input id="valor" type="number" step="any" min="0" max="10" name="valor"
+                th:value="${valorCampo}" required
+                th:attr="aria-invalid=${erros != null and erros.containsKey('valor')},
+                  aria-describedby=${erros != null and erros.containsKey('valor') ? 'valor-error' : null}" />
+              <p class="field-error" id="valor-error" role="alert"
+                th:if="${erros != null and erros.containsKey('valor')}"
+                th:text="${erros['valor']}"></p>
             </div>
           </div>
 

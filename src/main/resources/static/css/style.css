@@ -119,6 +119,16 @@ button:hover,
   background: #fff3f1;
 }
 
+.field-error {
+  margin: 0;
+  color: #912018;
+  font-size: 0.875rem;
+}
+
+input[aria-invalid="true"] {
+  border-color: #b42318;
+}
+
 :focus-visible {
   outline: 3px solid rgba(40, 122, 84, 0.35);
   outline-offset: 3px;

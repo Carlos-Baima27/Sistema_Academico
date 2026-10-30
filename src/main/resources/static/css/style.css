@@ -304,6 +304,61 @@ tbody tr:hover {
   background: #f8faff;
 }
 
+.academic-average {
+  display: inline-flex;
+  min-width: 3.25rem;
+  justify-content: center;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.55rem;
+  color: #1e293b;
+  background: #f8fafc;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.status-icon {
+  display: inline-grid;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 1.2rem;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.status-approved {
+  border-color: #9ac9a7;
+  color: #185c32;
+  background: #edf8ef;
+}
+
+.status-failed {
+  border-color: #e4a6a0;
+  color: #8a2119;
+  background: #fff1ef;
+}
+
+.status-no-grades {
+  border-color: #cbd5e1;
+  color: #475569;
+  background: #f1f5f9;
+}
+
 .empty-state {
   padding: 2.75rem 1.5rem;
   color: var(--color-muted);

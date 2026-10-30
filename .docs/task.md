@@ -42,9 +42,9 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 5 — Destaque do desempenho acadêmico (RF-06)
 
-- [ ] T024 [PRD:RF-06, QL-01] Aplicar estilos consistentes à média e à situação na listagem `src/main/resources/templates/alunos.html` e nos detalhes `src/main/resources/templates/aluno-detalhes.html`, usando os valores calculados pelo modelo.
-- [ ] T025 [PRD:RF-06, UX-01] Ajustar `src/main/resources/static/css/style.css` para diferenciar visualmente as situações sem depender exclusivamente de cores.
-- [ ] T026 [PRD:RF-06, QL-02] Verificar em testes ou revisão funcional que a apresentação de média e situação corresponde aos valores existentes na API e no modelo.
+- [x] T024 [PRD:RF-06, QL-01] Aplicar estilos consistentes à média e à situação na listagem `src/main/resources/templates/alunos.html` e nos detalhes `src/main/resources/templates/aluno-detalhes.html`, usando os valores calculados pelo modelo.
+- [x] T025 [PRD:RF-06, UX-01] Ajustar `src/main/resources/static/css/style.css` para diferenciar visualmente as situações sem depender exclusivamente de cores.
+- [x] T026 [PRD:RF-06, QL-02] Verificar em testes ou revisão funcional que a apresentação de média e situação corresponde aos valores existentes na API e no modelo.
 
 ## Etapa 6 — Ordenação e paginação (RF-05)
 

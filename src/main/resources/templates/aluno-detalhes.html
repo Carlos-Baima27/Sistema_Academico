@@ -59,11 +59,18 @@
             </div>
             <div class="detail-item">
               <dt>Média</dt>
-              <dd th:text="${aluno.media}"></dd>
+              <dd><span class="academic-average" th:text="${aluno.media}"></span></dd>
             </div>
             <div class="detail-item">
               <dt>Situação</dt>
-              <dd th:text="${aluno.situacao}"></dd>
+              <dd>
+                <span class="status-badge"
+                  th:classappend="${aluno.situacao == 'Aprovado'} ? ' status-approved' : (${aluno.situacao == 'Reprovado'} ? ' status-failed' : ' status-no-grades')">
+                  <span class="status-icon" aria-hidden="true"
+                    th:text="${aluno.situacao == 'Aprovado'} ? '&#10003;' : (${aluno.situacao == 'Reprovado'} ? '&#10005;' : '&#8212;')"></span>
+                  <span th:text="${aluno.situacao}"></span>
+                </span>
+              </dd>
             </div>
           </dl>
         </section>

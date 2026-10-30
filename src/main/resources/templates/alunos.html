@@ -84,8 +84,17 @@
                   <td th:text="${aluno.email}"></td>
                   <td th:text="${aluno.matricula}"></td>
                   <td th:text="${aluno.idade}"></td>
-                  <td th:text="${aluno.media}"></td>
-                  <td th:text="${aluno.situacao}"></td>
+                  <td>
+                    <span class="academic-average" th:text="${aluno.media}"></span>
+                  </td>
+                  <td>
+                    <span class="status-badge"
+                      th:classappend="${aluno.situacao == 'Aprovado'} ? ' status-approved' : (${aluno.situacao == 'Reprovado'} ? ' status-failed' : ' status-no-grades')">
+                      <span class="status-icon" aria-hidden="true"
+                        th:text="${aluno.situacao == 'Aprovado'} ? '&#10003;' : (${aluno.situacao == 'Reprovado'} ? '&#10005;' : '&#8212;')"></span>
+                      <span th:text="${aluno.situacao}"></span>
+                    </span>
+                  </td>
                   <td>
                     <a th:href="@{/alunos/{id}(id=${aluno.id})}">Detalhes</a>
                     <a th:href="@{/alunos/{id}/editar(id=${aluno.id})}">Editar</a>

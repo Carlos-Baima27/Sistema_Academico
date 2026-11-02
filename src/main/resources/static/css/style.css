@@ -366,6 +366,12 @@ tbody tr:hover {
   text-align: center;
 }
 
+.empty-state-inline {
+  padding: 0.8rem 0 0;
+  color: #e5f5e9;
+  text-align: left;
+}
+
 .empty-state p {
   margin: 0;
 }
@@ -491,6 +497,36 @@ select:focus {
   color: #ffffff;
   background: linear-gradient(145deg, #1d543b, #398660);
   box-shadow: 0 24px 55px rgba(30, 98, 66, 0.2);
+}
+
+.stats-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.stat-card {
+  display: grid;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stat-label {
+  color: #dff3e5;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
 }
 
 .hero-card-label {

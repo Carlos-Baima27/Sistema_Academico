@@ -36,7 +36,16 @@
           <div class="hero-card-mark" aria-hidden="true">SA</div>
           <p class="hero-card-label">Tudo em ordem</p>
           <h2>Informação clara para decisões melhores.</h2>
-          <p>Consulte o desempenho e os dados dos alunos com praticidade.</p>
+          <div class="stats-grid" aria-label="Indicadores da página inicial">
+            <div class="stat-card">
+              <span class="stat-label">Total de alunos</span>
+              <strong class="stat-value" th:text="${totalAlunos}">0</strong>
+            </div>
+          </div>
+          <div class="empty-state empty-state-inline" th:if="${totalAlunos == 0}">
+            <p>Nenhum aluno cadastrado ainda.</p>
+          </div>
+          <p th:unless="${totalAlunos == 0}">Consulte o desempenho e os dados dos alunos com praticidade.</p>
         </aside>
       </main>
     </div>

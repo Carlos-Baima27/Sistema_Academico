@@ -59,6 +59,11 @@ class AlunoControllerTest {
             }
 
             @Override
+            public long contarAlunos() {
+                return AlunoControllerTest.this.alunos.size();
+            }
+
+            @Override
             public Aluno buscarPorId(Long id) {
                 return AlunoControllerTest.this.alunos.get(id);
             }
@@ -117,6 +122,26 @@ class AlunoControllerTest {
                 .setViewResolvers((viewName, locale) -> (model, request, response) -> {
                 })
                 .build();
+    }
+
+    @Test
+    void paginaInicialExpõeTotalDeAlunos() throws Exception {
+        MvcResult resultado = mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(2L, resultado.getModelAndView().getModel().get("totalAlunos"));
+    }
+
+    @Test
+    void paginaInicialIdentificaListaVazia() throws Exception {
+        alunos.clear();
+
+        MvcResult resultado = mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(0L, resultado.getModelAndView().getModel().get("totalAlunos"));
     }
 
     @Test

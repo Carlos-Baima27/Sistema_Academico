@@ -29,6 +29,10 @@ public class AlunoService {
         return alunos;
     }
 
+    public long contarAlunos() {
+        return alunoRepository.count();
+    }
+
     public Aluno buscarPorId(Long id) {
         Aluno aluno = alunoRepository.findById(id)
                 .orElse(null);

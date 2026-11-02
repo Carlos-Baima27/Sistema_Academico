@@ -56,10 +56,10 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 7 — Indicadores na página inicial (RF-08)
 
-- [ ] T032 [PRD:RF-08] Disponibilizar à rota inicial em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java` a quantidade real de alunos usando a camada de serviço.
-- [ ] T033 [PRD:RF-08] Exibir o total de alunos e um estado apropriado para lista vazia em `src/main/resources/templates/index.html`, mantendo os atalhos para consulta e cadastro.
-- [ ] T034 [PRD:RF-08] Se indicadores adicionais forem priorizados em T003, disponibilizar seus dados pela camada de serviço e apresentá-los em `src/main/resources/templates/index.html` sem duplicar regras acadêmicas.
-- [ ] T035 [PRD:RF-08, QL-02] Testar o total e os estados da página inicial, incluindo ausência de alunos e indicadores adicionais quando implementados.
+- [x] T032 [PRD:RF-08] Disponibilizar à rota inicial em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java` a quantidade real de alunos usando a camada de serviço.
+- [x] T033 [PRD:RF-08] Exibir o total de alunos e um estado apropriado para lista vazia em `src/main/resources/templates/index.html`, mantendo os atalhos para consulta e cadastro.
+- [x] T034 [PRD:RF-08] Se indicadores adicionais forem priorizados em T003, disponibilizar seus dados pela camada de serviço e apresentá-los em `src/main/resources/templates/index.html` sem duplicar regras acadêmicas.
+- [x] T035 [PRD:RF-08, QL-02] Testar o total e os estados da página inicial, incluindo ausência de alunos e indicadores adicionais quando implementados.
 
 ## Etapa 8 — Acessibilidade, responsividade e validação final
 

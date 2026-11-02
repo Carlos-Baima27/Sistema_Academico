@@ -28,7 +28,8 @@ public class AlunoController {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("totalAlunos", alunoService.contarAlunos());
         return "index";
     }
 

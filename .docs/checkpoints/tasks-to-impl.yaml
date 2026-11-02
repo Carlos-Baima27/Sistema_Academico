@@ -1,11 +1,11 @@
 metadata:
-  generated: "2026-10-27"
+  generated: "2026-11-01"
   source_tasks: ".docs/task.md"
-  last_updated: "2026-10-27"
+  last_updated: "2026-11-01"
 
 summary:
-  total_tasks: 5
-  completed_tasks: 5
+  total_tasks: 10
+  completed_tasks: 10
   in_progress_tasks: 0
   pending_tasks: 0
   completion_percentage: 100.0
@@ -149,6 +149,150 @@ tasks:
       plan_item: "2. Ações de gerenciamento na listagem"
       requirements: ["RF-03", "QL-02"]
       full_trace: "RF-03 -> Plano 2 -> T013 -> AlunoControllerTest"
+  - task_id: "T027"
+    description: "Decidir se paginação integra a primeira entrega."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: ".docs/task.md"
+          changes:
+            - change_type: "modified"
+              description: "Registra que a paginação será adiada até o volume justificar."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' clean test"
+        passed: 35
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "Decisão de escopo previamente registrada em T003 e confirmada para esta entrega."
+    upstream_trace:
+      plan_item: "3. Paginação e ordenação"
+      requirements: ["RF-05"]
+      full_trace: "RF-05 -> Plano 3 -> T027 -> decisão registrada em .docs/task.md"
+  - task_id: "T028"
+    description: "Ordenar alunos por nome, matrícula, média e situação."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+          changes:
+            - line_start: 36
+              line_end: 94
+              change_type: "modified"
+              description: "Ordena a cópia filtrada com critério validado, direção crescente/decrescente e desempate por ID."
+            - line_start: 189
+              line_end: 214
+              change_type: "modified"
+              description: "Preserva pesquisa e parâmetros de ordenação após exclusão."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -Dtest=AlunoControllerTest test"
+        passed: 24
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "Testes cobrem os quatro critérios, ambas as direções e critério inválido."
+    upstream_trace:
+      plan_item: "3. Paginação e ordenação"
+      requirements: ["RF-05"]
+      full_trace: "RF-05 -> Plano 3 -> T028 -> AlunoController.listar"
+  - task_id: "T029"
+    description: "Adicionar controles e indicar a ordenação atual."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/main/resources/templates/alunos.html"
+          changes:
+            - line_start: 38
+              line_end: 73
+              change_type: "modified"
+              description: "Adiciona seletores acessíveis para critério/direção e informa a ordenação atual."
+        - file: "src/main/resources/static/css/style.css"
+          changes:
+            - line_start: 44
+              line_end: 45
+              change_type: "modified"
+              description: "Aplica estilo tipográfico consistente aos seletores."
+            - line_start: 414
+              line_end: 415
+              change_type: "modified"
+              description: "Mantém indicação visível de foco nos novos seletores."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -Dtest=SistemaacademicoApplicationTests test"
+        passed: 2
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "Teste de integração renderiza a listagem e verifica os controles selecionados."
+    upstream_trace:
+      plan_item: "3. Paginação e ordenação"
+      requirements: ["RF-05"]
+      full_trace: "RF-05 -> Plano 3 -> T029 -> alunos.html"
+  - task_id: "T030"
+    description: "Implementar paginação apenas se aprovada em T027."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: ".docs/task.md"
+          changes:
+            - change_type: "modified"
+              description: "Registra T030 como não aplicável porque a paginação foi adiada."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' clean test"
+        passed: 35
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "A condição de T030 não foi atendida; não há controles de página nesta entrega."
+    upstream_trace:
+      plan_item: "3. Paginação e ordenação"
+      requirements: ["RF-05"]
+      full_trace: "RF-05 -> Plano 3 -> T027 (paginação adiada) -> T030 não aplicável"
+  - task_id: "T031"
+    description: "Testar ordenação e preservação de parâmetros."
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
+          changes:
+            - line_start: 234
+              line_end: 318
+              change_type: "modified"
+              description: "Testa nome, matrícula, média, situação, direções, pesquisa ativa e valores inválidos."
+            - line_start: 43
+              line_end: 48
+              change_type: "modified"
+              description: "Limpa as notas das fixtures compartilhadas para evitar testes dependentes de ordem."
+            - line_start: 494
+              line_end: 512
+              change_type: "modified"
+              description: "Verifica preservação de critério/direção após exclusão."
+        - file: "src/test/java/com/cursojava/sistemaacademico/SistemaacademicoApplicationTests.java"
+          changes:
+            - line_start: 26
+              line_end: 42
+              change_type: "modified"
+              description: "Valida renderização dos controles de ordenação na listagem."
+    verification:
+      build_passed: true
+      test_results:
+        command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' clean test"
+        passed: 35
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "A paginação não foi aprovada; os testes de navegação de página ficam fora do escopo atual."
+    upstream_trace:
+      plan_item: "3. Paginação e ordenação"
+      requirements: ["RF-05", "QL-02"]
+      full_trace: "RF-05 -> Plano 3 -> T031 -> testes de AlunoController e renderização"
 
 pending_tasks: []
 untracked_changes: []
@@ -164,6 +308,19 @@ traceability_chain:
       - "src/main/resources/templates/alunos.html"
       - "src/main/resources/templates/aluno-detalhes.html"
       - "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
+    status: "complete"
+  - chain_id: "TRACE-RF05-SORT"
+    requirement: "RF-05"
+    plan_phase: "Etapa 6"
+    plan_item: "Paginação e ordenação"
+    tasks: ["T027", "T028", "T029", "T030", "T031"]
+    files:
+      - ".docs/task.md"
+      - "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
+      - "src/main/resources/templates/alunos.html"
+      - "src/main/resources/static/css/style.css"
+      - "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
+      - "src/test/java/com/cursojava/sistemaacademico/SistemaacademicoApplicationTests.java"
     status: "complete"
 
 validation:

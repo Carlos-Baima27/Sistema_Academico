@@ -1,122 +1,134 @@
-batch_id: "stage-2-editing"
-completed_tasks: ["T009", "T010", "T011", "T012", "T013"]
+batch_id: "stage-6-sorting"
+completed_tasks: ["T027", "T028", "T029", "T030", "T031"]
 blocked_tasks: []
 files_changed:
-  T009:
+  T027:
+    - file: ".docs/task.md"
+      change_type: "modified"
+      description: "Confirma que paginação fica adiada até o volume justificá-la."
+  T028:
     - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
       change_type: "modified"
-      description: "Adicionada a rota GET de edição com redirecionamento para aluno inexistente."
-  T010:
-    - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
-      change_type: "modified"
-      description: "Cadastro e edição compartilham o formulário com valores e atributos adequados."
-    - file: "src/main/resources/templates/aluno-form.html"
-      change_type: "modified"
-      description: "Formulário alterna título, ação, botão e valores para cadastro/edição."
-  T011:
-    - file: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"
-      change_type: "modified"
-      description: "Adicionada a rota POST que valida, atualiza e redireciona após sucesso."
-    - file: "src/main/resources/templates/aluno-form.html"
-      change_type: "modified"
-      description: "Falhas de validação são exibidas e os valores informados permanecem no formulário."
-  T012:
+      description: "Adiciona ordenação validada por nome, matrícula, média e situação em ambas as direções."
+  T029:
     - file: "src/main/resources/templates/alunos.html"
       change_type: "modified"
-      description: "Adicionado link para editar em cada linha da listagem."
-    - file: "src/main/resources/templates/aluno-detalhes.html"
+      description: "Adiciona seleção de critério/direção e exibe a ordenação atual."
+    - file: "src/main/resources/static/css/style.css"
       change_type: "modified"
-      description: "Adicionado link para editar na página de detalhes."
-  T013:
+      description: "Aplica estilo aos controles de seleção."
+  T030:
+    - file: ".docs/task.md"
+      change_type: "modified"
+      description: "Registra paginação como não aplicável nesta entrega conforme decisão de T027."
+  T031:
     - file: "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
       change_type: "modified"
-      description: "Testes cobrem carregamento, atualização válida, dados inválidos e IDs inexistentes."
+      description: "Testa os critérios de ordenação, direções, pesquisa ativa e preservação após exclusão."
+    - file: "src/test/java/com/cursojava/sistemaacademico/SistemaacademicoApplicationTests.java"
+      change_type: "modified"
+      description: "Verifica renderização da listagem e controles de ordenação selecionados."
 upstream_artifacts_consumed:
-  T009:
+  T027:
     - artifact: ".docs/task.md"
-      used_for: "Escopo e comportamento esperado da rota GET de edição."
+      used_for: "Decisão de T003 de adiar paginação até o volume justificar."
     - artifact: ".docs/prd.md"
-      used_for: "Critérios de aceite de RF-03."
-  T010:
+      used_for: "RF-05 e escopo condicionado ao volume de alunos."
+  T028:
+    - artifact: ".docs/prd.md"
+      used_for: "RF-05: ordenar por nome, matrícula, média e situação nas direções aplicáveis."
     - artifact: ".docs/plan.md"
-      used_for: "Reutilização do formulário de aluno para edição."
-  T011:
+      used_for: "Requisitos de ordenação e preservação da pesquisa."
+  T029:
     - artifact: ".docs/prd.md"
-      used_for: "RF-03 e validação consistente com as regras existentes."
-  T012:
+      used_for: "RF-05: critério de ordenação deve ser identificável e alterável."
+  T030:
     - artifact: ".docs/task.md"
-      used_for: "Superfícies de navegação exigidas para iniciar a edição."
-  T013:
+      used_for: "Condição de T030 depende da aprovação de paginação em T027."
+  T031:
     - artifact: ".docs/prd.md"
-      used_for: "Critérios de teste para sucesso, invalidade e aluno inexistente."
+      used_for: "Critérios de aceite e cobertura de RF-05."
 evidence_mapping:
-  T009:
-    - upstream: ".docs/prd.md#RF-03"
-      output: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java#formularioEdicaoAluno"
-      evidence: "AlunoControllerTest#formularioDeEdicaoCarregaAlunoExistente e formularioDeEdicaoRedirecionaQuandoAlunoNaoExiste"
-  T010:
-    - upstream: ".docs/plan.md#Melhorias propostas"
-      output: "src/main/resources/templates/aluno-form.html"
-      evidence: "Runtime smoke test verificou título, valores, ação e renderização do formulário de edição."
-  T011:
-    - upstream: ".docs/prd.md#RF-03"
-      output: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java#atualizarAluno"
-      evidence: "AlunoControllerTest#atualizaAlunoComDadosValidos, dadosInvalidosNaoAtualizamAlunoERetornamFormulario e atualizacaoDeAlunoInexistenteRedirecionaSemSimularSucesso"
-  T012:
-    - upstream: ".docs/task.md#Etapa-2"
-      output: "src/main/resources/templates/alunos.html e src/main/resources/templates/aluno-detalhes.html"
-      evidence: "Runtime smoke test confirmou ambos os links."
-  T013:
-    - upstream: ".docs/prd.md#RF-03"
+  T027:
+    - upstream: ".docs/task.md#Etapa-6"
+      output: ".docs/task.md#Observações"
+      evidence: "A decisão registra que paginação será adiada até o volume justificá-la."
+  T028:
+    - upstream: ".docs/prd.md#RF-05"
+      output: "src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java#listar"
+      evidence: "Testes demonstram ordenação de nome, matrícula, média e situação crescente/decrescente."
+  T029:
+    - upstream: ".docs/prd.md#RF-05"
+      output: "src/main/resources/templates/alunos.html"
+      evidence: "SistemaacademicoApplicationTests.listaRenderizaOsControlesEOCriterioDeOrdenacao renderiza os seletores selecionados."
+  T030:
+    - upstream: ".docs/task.md#T027"
+      output: ".docs/task.md#T030"
+      evidence: "T030 está registrado como não aplicável enquanto a paginação estiver adiada."
+  T031:
+    - upstream: ".docs/prd.md#RF-05"
       output: "src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"
-      evidence: "Suíte completa: 12 testes passaram, 0 falharam; teste de fluxo em runtime passou."
+      evidence: "Suíte completa: 35 testes passaram, 0 falharam."
 traceability:
-  - requirement: "RF-03"
-    plan_item: "2. Ações de gerenciamento na listagem"
-    task: "T009"
+  - requirement: "RF-05"
+    plan_item: "3. Paginação e ordenação"
+    task: "T027"
+    files: [".docs/task.md"]
+    status: "completed"
+  - requirement: "RF-05"
+    plan_item: "3. Paginação e ordenação"
+    task: "T028"
     files: ["src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java"]
     status: "completed"
-  - requirement: "RF-03"
-    plan_item: "2. Ações de gerenciamento na listagem"
-    task: "T010"
-    files: ["src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java", "src/main/resources/templates/aluno-form.html"]
+  - requirement: "RF-05"
+    plan_item: "3. Paginação e ordenação"
+    task: "T029"
+    files: ["src/main/resources/templates/alunos.html", "src/main/resources/static/css/style.css"]
     status: "completed"
-  - requirement: "RF-03, RF-07"
-    plan_item: "2. Ações de gerenciamento na listagem"
-    task: "T011"
-    files: ["src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java", "src/main/resources/templates/aluno-form.html"]
+  - requirement: "RF-05"
+    plan_item: "3. Paginação e ordenação"
+    task: "T030"
+    files: [".docs/task.md"]
     status: "completed"
-  - requirement: "RF-03"
-    plan_item: "2. Ações de gerenciamento na listagem"
-    task: "T012"
-    files: ["src/main/resources/templates/alunos.html", "src/main/resources/templates/aluno-detalhes.html"]
-    status: "completed"
-  - requirement: "RF-03, QL-02"
-    plan_item: "2. Ações de gerenciamento na listagem"
-    task: "T013"
-    files: ["src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java"]
+  - requirement: "RF-05, QL-02"
+    plan_item: "3. Paginação e ordenação"
+    task: "T031"
+    files: ["src/test/java/com/cursojava/sistemaacademico/controller/AlunoControllerTest.java", "src/test/java/com/cursojava/sistemaacademico/SistemaacademicoApplicationTests.java"]
     status: "completed"
 protocol_violation: false
 errors: []
-warnings:
-  - severity: "LOW"
-    message: "A execução padrão da suíte encontrou o H2 em arquivo bloqueado pelo processo que já atendia a porta 8080. A suíte completa e o build passaram ao usar banco H2 em memória; os dados do processo existente não foram alterados."
+warnings: []
 test_results:
-  T013:
-    command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -q test"
-    passed: 12
+  T027:
+    command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' clean test"
+    passed: 35
+    failed: 0
+    skipped: 0
+    failures: []
+  T028:
+    command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -Dtest=AlunoControllerTest test"
+    passed: 24
+    failed: 0
+    skipped: 0
+    failures: []
+  T029:
+    command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' -Dtest=SistemaacademicoApplicationTests test"
+    passed: 2
+    failed: 0
+    skipped: 0
+    failures: []
+  T030:
+    command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' clean test"
+    passed: 35
+    failed: 0
+    skipped: 0
+    failures: []
+  T031:
+    command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' clean test"
+    passed: 35
     failed: 0
     skipped: 0
     failures: []
 build:
-  command: ".\\mvnw.cmd -q -DskipTests package"
+  command: ".\\mvnw.cmd '-Dspring.datasource.url=jdbc:h2:mem:app-tests;DB_CLOSE_DELAY=-1' clean test"
   passed: true
-endpoint_probes:
-  - method: "GET"
-    path: "/alunos/{id}/editar"
-    status: 200
-    result: "PASS; formulário Thymeleaf renderizado com campos atuais e ação correspondente."
-  - method: "POST"
-    path: "/alunos/{id}"
-    status: 200
-    result: "PASS após redirecionamento; atualização persistida no H2 em memória."

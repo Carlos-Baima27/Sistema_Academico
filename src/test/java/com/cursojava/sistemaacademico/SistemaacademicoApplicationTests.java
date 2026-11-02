@@ -1,13 +1,41 @@
 package com.cursojava.sistemaacademico;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 class SistemaacademicoApplicationTests {
+
+	@Autowired
+	private MockMvc mockMvc;
 
 	@Test
 	void contextLoads() {
+	}
+
+	@Test
+	void listaRenderizaOsControlesEOCriterioDeOrdenacao() throws Exception {
+		mockMvc.perform(get("/alunos")
+						.param("nome", "Inexistente")
+						.param("ordenarPor", "situacao")
+						.param("direcao", "desc"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("Ordenação atual:")))
+				.andExpect(content().string(containsString(
+						"value=\"situacao\" selected=\"selected\"")))
+				.andExpect(content().string(containsString(
+						"value=\"desc\" selected=\"selected\"")))
+				.andExpect(content().string(containsString(
+						"href=\"/alunos?ordenarPor=situacao&amp;direcao=desc\"")));
 	}
 
 }

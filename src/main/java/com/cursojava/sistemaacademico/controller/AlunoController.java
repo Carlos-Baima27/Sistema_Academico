@@ -1,7 +1,10 @@
 package com.cursojava.sistemaacademico.controller;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -31,14 +34,61 @@ public class AlunoController {
 
     @GetMapping("/alunos")
     public String listar(@RequestParam(required = false) String nome,
+            @RequestParam(required = false) String ordenarPor,
+            @RequestParam(required = false) String direcao,
             Model model) {
-        List<Aluno> alunos = alunoService.buscarPorNome(nome);
+        List<Aluno> alunos = new ArrayList<>(alunoService.buscarPorNome(nome));
+        String criterio = normalizarCriterio(ordenarPor);
+        String sentido = "desc".equalsIgnoreCase(direcao) ? "desc" : "asc";
+        Comparator<Aluno> comparador = comparadorPara(criterio)
+                .thenComparing(Aluno::getId);
+        if ("desc".equals(sentido)) {
+            comparador = comparador.reversed();
+        }
+        alunos.sort(comparador);
 
         model.addAttribute("alunos", alunos);
         model.addAttribute("nomePesquisado", nome == null ? "" : nome);
         model.addAttribute("pesquisando", nome != null && !nome.isBlank());
+        model.addAttribute("ordenarPor", criterio);
+        model.addAttribute("direcao", sentido);
+        model.addAttribute("ordenacaoAtual", descricaoOrdenacao(criterio, sentido));
 
         return "alunos";
+    }
+
+    private String normalizarCriterio(String ordenarPor) {
+        if (ordenarPor == null) {
+            return "nome";
+        }
+
+        return switch (ordenarPor.toLowerCase(Locale.ROOT)) {
+            case "matricula", "media", "situacao" -> ordenarPor.toLowerCase(Locale.ROOT);
+            default -> "nome";
+        };
+    }
+
+    private Comparator<Aluno> comparadorPara(String criterio) {
+        return switch (criterio) {
+            case "matricula" -> Comparator.comparing(Aluno::getMatricula,
+                    String.CASE_INSENSITIVE_ORDER);
+            case "media" -> Comparator.comparingDouble(Aluno::getMedia);
+            case "situacao" -> Comparator.comparing(Aluno::getSituacao,
+                    String.CASE_INSENSITIVE_ORDER);
+            default -> Comparator.comparing(Aluno::getNome,
+                    String.CASE_INSENSITIVE_ORDER);
+        };
+    }
+
+    private String descricaoOrdenacao(String criterio, String sentido) {
+        String campo = switch (criterio) {
+            case "matricula" -> "matrícula";
+            case "media" -> "média";
+            case "situacao" -> "situação";
+            default -> "nome";
+        };
+        String ordem = "desc".equals(sentido) ? "decrescente" : "crescente";
+        return campo + " (" + ordem + ")";
     }
 
     @GetMapping("/alunos/novo")
@@ -138,6 +188,8 @@ public class AlunoController {
     @PostMapping("/alunos/{id}/excluir")
     public String excluirAluno(@PathVariable Long id,
             @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String ordenarPor,
+            @RequestParam(required = false) String direcao,
             RedirectAttributes redirectAttributes) {
         if (alunoService.excluirAluno(id)) {
             redirectAttributes.addFlashAttribute("mensagemSucesso",
@@ -149,6 +201,12 @@ public class AlunoController {
 
         if (nome != null && !nome.isBlank()) {
             redirectAttributes.addAttribute("nome", nome);
+        }
+        if (ordenarPor != null && !ordenarPor.isBlank()) {
+            redirectAttributes.addAttribute("ordenarPor", ordenarPor);
+        }
+        if (direcao != null && !direcao.isBlank()) {
+            redirectAttributes.addAttribute("direcao", direcao);
         }
 
         return "redirect:/alunos";

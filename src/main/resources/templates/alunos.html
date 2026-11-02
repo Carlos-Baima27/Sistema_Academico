@@ -41,13 +41,37 @@
               <input id="pesquisa-nome" name="nome" type="search"
                 th:value="${nomePesquisado}" />
             </div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="ordenar-por">Ordenar por</label>
+                <select id="ordenar-por" name="ordenarPor">
+                  <option value="nome" th:selected="${ordenarPor == 'nome'}">Nome</option>
+                  <option value="matricula" th:selected="${ordenarPor == 'matricula'}">Matrícula</option>
+                  <option value="media" th:selected="${ordenarPor == 'media'}">Média</option>
+                  <option value="situacao" th:selected="${ordenarPor == 'situacao'}">Situação</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="direcao">Direção</label>
+                <select id="direcao" name="direcao">
+                  <option value="asc" th:selected="${direcao == 'asc'}">Crescente</option>
+                  <option value="desc" th:selected="${direcao == 'desc'}">Decrescente</option>
+                </select>
+              </div>
+            </div>
             <div class="form-actions">
-              <button class="button" type="submit">Pesquisar</button>
-              <a class="button button-secondary" href="/alunos" th:if="${pesquisando}">
+              <button class="button" type="submit">Aplicar</button>
+              <a class="button button-secondary"
+                th:href="@{/alunos(ordenarPor=${ordenarPor},direcao=${direcao})}"
+                th:if="${pesquisando}">
                 Limpar pesquisa
               </a>
             </div>
           </form>
+
+          <p class="page-description" aria-live="polite">
+            Ordenação atual: <strong th:text="${ordenacaoAtual}"></strong>
+          </p>
 
           <div class="empty-state" th:if="${#lists.isEmpty(alunos) and pesquisando}">
             <h2>Nenhum aluno encontrado</h2>
@@ -103,6 +127,8 @@
                       onsubmit="return confirm('Tem certeza de que deseja excluir este aluno? Esta ação também removerá as notas associadas.');">
                       <input type="hidden" name="nome" th:value="${nomePesquisado}"
                         th:if="${pesquisando}" />
+                      <input type="hidden" name="ordenarPor" th:value="${ordenarPor}" />
+                      <input type="hidden" name="direcao" th:value="${direcao}" />
                       <button class="button button-danger" type="submit"
                         th:attr="aria-label='Excluir aluno ' + ${aluno.nome}">
                         Excluir

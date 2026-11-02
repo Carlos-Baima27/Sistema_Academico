@@ -48,11 +48,11 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 6 — Ordenação e paginação (RF-05)
 
-- [ ] T027 [PRD:RF-05] Definir, com base no volume esperado e na persistência disponível, se a paginação faz parte da primeira entrega.
-- [ ] T028 [PRD:RF-05] Implementar ordenação por nome, matrícula, média e situação na rota `GET /alunos` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`, preservando a pesquisa ativa.
-- [ ] T029 [PRD:RF-05] Adicionar controles de ordenação e indicação do critério atual em `src/main/resources/templates/alunos.html`.
-- [ ] T030 [PRD:RF-05] Se a paginação for aprovada em T027, implementar navegação e quantidade de resultados na listagem, preservando pesquisa e ordenação.
-- [ ] T031 [PRD:RF-05, QL-02] Testar ordenação, navegação entre páginas quando aplicável e preservação dos parâmetros de consulta.
+- [x] T027 [PRD:RF-05] Definir, com base no volume esperado e na persistência disponível, se a paginação faz parte da primeira entrega.
+- [x] T028 [PRD:RF-05] Implementar ordenação por nome, matrícula, média e situação na rota `GET /alunos` em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`, preservando a pesquisa ativa.
+- [x] T029 [PRD:RF-05] Adicionar controles de ordenação e indicação do critério atual em `src/main/resources/templates/alunos.html`.
+- [x] T030 [PRD:RF-05] Se a paginação for aprovada em T027, implementar navegação e quantidade de resultados na listagem, preservando pesquisa e ordenação.
+- [x] T031 [PRD:RF-05, QL-02] Testar ordenação, navegação entre páginas quando aplicável e preservação dos parâmetros de consulta.
 
 ## Etapa 7 — Indicadores na página inicial (RF-08)
 
@@ -91,8 +91,8 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - O comportamento esperado ao excluir um aluno é remover também suas notas associadas. `Aluno.notas` configura `CascadeType.ALL`; o teste de integração verifica a exclusão em cascata. O identificador de `Nota` foi ajustado para `Long` gerado, compatível com `NotaRepository`.
 - Os testes registram os limites atuais sem alterá-los: idade maior que zero e nota de 0 a 10, inclusive.
 - As tarefas condicionais dependem das decisões indicadas em T003 e T027.
+- T027/T030: a paginação continua adiada; a decisão anterior de T003 permanece válida até que o volume de alunos a justifique. T030 foi avaliada como não aplicável nesta entrega. A ordenação permite nome, matrícula, média e situação em ordem crescente ou decrescente, e preserva pesquisa/ordenação ao limpar a busca ou excluir um aluno.
+- T031: testes automatizados verificam os quatro critérios, ambas as direções, pesquisa ativa, estado dos controles renderizados e preservação da ordenação após exclusão; não há navegação entre páginas enquanto a paginação estiver adiada.
 - Os limites citados devem ser confirmados na implementação existente antes de serem alterados; este backlog não propõe mudar regras acadêmicas.
 - T017: exclusão confirmada, ID inexistente e exclusão em cascata foram validados por testes automatizados. O cancelamento da confirmação não pôde ser exercitado no navegador porque a sessão já ativa em `localhost:8080` ainda serve a versão antiga; ela não foi reiniciada para evitar interrompê-la.
 - Marcar uma tarefa como concluída somente após implementar e verificar seu resultado.
-
-add para commit

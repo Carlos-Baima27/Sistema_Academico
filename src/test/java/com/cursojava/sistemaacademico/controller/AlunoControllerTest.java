@@ -8,9 +8,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,21 +40,22 @@ class AlunoControllerTest {
         ana.setEmail("ana@example.com");
         ana.setMatricula("A001");
         ana.setIdade(20);
+        ana.getNotas().clear();
         bruno.setNome("Bruno Costa");
         bruno.setEmail("bruno@example.com");
         bruno.setMatricula("A002");
         bruno.setIdade(21);
+        bruno.getNotas().clear();
         alunos.clear();
         alunos.put(ana.getId(), ana);
         alunos.put(bruno.getId(), bruno);
         falharCadastroAluno = false;
         falharAtualizacao = false;
         falharCadastroNota = false;
-        List<Aluno> alunos = List.of(ana, bruno);
         AlunoService alunoService = new AlunoService(null, null) {
             @Override
             public List<Aluno> listarTodos() {
-                return alunos;
+                return new ArrayList<>(AlunoControllerTest.this.alunos.values());
             }
 
             @Override
@@ -225,6 +228,89 @@ class AlunoControllerTest {
         assertEquals(List.of(ana, bruno), resultado.getModelAndView().getModel().get("alunos"));
         assertEquals("", resultado.getModelAndView().getModel().get("nomePesquisado"));
         assertFalse((Boolean) resultado.getModelAndView().getModel().get("pesquisando"));
+    }
+
+    @Test
+    void ordenaPorNomeNasDuasDirecoesEUsaNomeComoPadrao() throws Exception {
+        Aluno clara = new Aluno(3L, "Clara Souza", "clara@example.com", "A003", 19);
+        alunos.put(clara.getId(), clara);
+
+        MvcResult crescente = mockMvc.perform(get("/alunos"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MvcResult decrescente = mockMvc.perform(get("/alunos")
+                        .param("ordenarPor", "nome")
+                        .param("direcao", "desc"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(List.of("Ana Silva", "Bruno Costa", "Clara Souza"),
+                nomesDaLista(crescente));
+        assertEquals(List.of("Clara Souza", "Bruno Costa", "Ana Silva"),
+                nomesDaLista(decrescente));
+        assertEquals("nome", crescente.getModelAndView().getModel().get("ordenarPor"));
+        assertEquals("desc", decrescente.getModelAndView().getModel().get("direcao"));
+    }
+
+    @Test
+    void ordenaPorMatriculaEMedia() throws Exception {
+        ana.setMatricula("A003");
+        bruno.setMatricula("A001");
+        Aluno clara = new Aluno(3L, "Clara Souza", "clara@example.com", "A002", 19);
+        clara.adicionarNota(new Nota("Prova", 5.0));
+        ana.adicionarNota(new Nota("Prova", 8.0));
+        bruno.adicionarNota(new Nota("Prova", 6.0));
+        alunos.put(clara.getId(), clara);
+
+        MvcResult porMatricula = mockMvc.perform(get("/alunos")
+                        .param("ordenarPor", "matricula"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MvcResult porMedia = mockMvc.perform(get("/alunos")
+                        .param("ordenarPor", "media")
+                        .param("direcao", "desc"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(List.of("Bruno Costa", "Clara Souza", "Ana Silva"),
+                nomesDaLista(porMatricula));
+        assertEquals(List.of("Ana Silva", "Bruno Costa", "Clara Souza"),
+                nomesDaLista(porMedia));
+    }
+
+    @Test
+    void ordenaPorSituacaoEPreservaPesquisaEOrdenacaoSelecionada() throws Exception {
+        Aluno clara = new Aluno(3L, "Clara Souza", "clara@example.com", "A003", 19);
+        ana.adicionarNota(new Nota("Prova", 8.0));
+        bruno.adicionarNota(new Nota("Prova", 5.0));
+        alunos.put(clara.getId(), clara);
+
+        MvcResult resultado = mockMvc.perform(get("/alunos")
+                        .param("nome", "a")
+                        .param("ordenarPor", "situacao")
+                        .param("direcao", "desc"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(List.of("Clara Souza", "Bruno Costa", "Ana Silva"),
+                nomesDaLista(resultado));
+        assertEquals("a", resultado.getModelAndView().getModel().get("nomePesquisado"));
+        assertEquals("situacao", resultado.getModelAndView().getModel().get("ordenarPor"));
+        assertEquals("desc", resultado.getModelAndView().getModel().get("direcao"));
+        assertTrue((Boolean) resultado.getModelAndView().getModel().get("pesquisando"));
+    }
+
+    @Test
+    void criterioDeOrdenacaoDesconhecidoUsaNomeComoPadrao() throws Exception {
+        MvcResult resultado = mockMvc.perform(get("/alunos")
+                        .param("ordenarPor", "campo-inexistente")
+                        .param("direcao", "lateral"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(List.of("Ana Silva", "Bruno Costa"), nomesDaLista(resultado));
+        assertEquals("nome", resultado.getModelAndView().getModel().get("ordenarPor"));
+        assertEquals("asc", resultado.getModelAndView().getModel().get("direcao"));
     }
 
     @Test
@@ -407,7 +493,9 @@ class AlunoControllerTest {
     @Test
     void exclusaoDeAlunoExistenteConfirmaESegueNaPesquisaAtual() throws Exception {
         MvcResult resultado = mockMvc.perform(post("/alunos/1/excluir")
-                        .param("nome", "Ana"))
+                        .param("nome", "Ana")
+                        .param("ordenarPor", "media")
+                        .param("direcao", "desc"))
                 .andExpect(status().isOk())
                 .andExpect(flash().attribute("mensagemSucesso",
                         "Aluno excluído com sucesso."))
@@ -415,6 +503,8 @@ class AlunoControllerTest {
 
         assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
         assertEquals("Ana", resultado.getModelAndView().getModel().get("nome"));
+        assertEquals("media", resultado.getModelAndView().getModel().get("ordenarPor"));
+        assertEquals("desc", resultado.getModelAndView().getModel().get("direcao"));
         assertFalse(alunos.containsKey(ana.getId()));
     }
 
@@ -427,5 +517,13 @@ class AlunoControllerTest {
                 .andReturn();
 
         assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
+    }
+
+    private List<String> nomesDaLista(MvcResult resultado) {
+        List<?> lista = (List<?>) resultado.getModelAndView().getModel().get("alunos");
+        return lista.stream()
+                .map(Aluno.class::cast)
+                .map(Aluno::getNome)
+                .collect(Collectors.toList());
     }
 }

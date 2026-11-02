@@ -41,7 +41,8 @@ a:hover {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -395,7 +396,8 @@ label {
   font-weight: 700;
 }
 
-input {
+input,
+select {
   width: 100%;
   min-height: 2.85rem;
   padding: 0.65rem 0.8rem;
@@ -409,7 +411,8 @@ input::placeholder {
   color: #94a3b8;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border-color: var(--color-primary);
   outline: 3px solid rgba(40, 122, 84, 0.14);
 }

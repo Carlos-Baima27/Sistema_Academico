@@ -86,7 +86,8 @@
             <p>Cadastre o primeiro aluno para começar a acompanhar o desempenho acadêmico.</p>
           </div>
 
-          <div class="table-wrapper" th:if="${!#lists.isEmpty(alunos)}">
+          <div class="table-wrapper" role="region" aria-label="Tabela de alunos"
+            tabindex="0" th:if="${!#lists.isEmpty(alunos)}">
             <table>
               <caption>Alunos cadastrados</caption>
               <thead>

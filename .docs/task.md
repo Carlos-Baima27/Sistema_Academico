@@ -63,10 +63,10 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Etapa 8 — Acessibilidade, responsividade e validação final
 
-- [ ] T036 [PRD:UX-01] Revisar rótulos, hierarquia de títulos, mensagens semânticas e foco visível nas páginas `src/main/resources/templates/index.html`, `src/main/resources/templates/alunos.html`, `src/main/resources/templates/aluno-detalhes.html`, `src/main/resources/templates/aluno-form.html` e `src/main/resources/templates/nota-form.html`.
-- [ ] T037 [PRD:UX-02] Verificar em `src/main/resources/static/css/style.css` e nas páginas alteradas a legibilidade em telas estreitas e o acesso às ações da tabela.
-- [ ] T038 [PRD:UX-01, UX-02, QL-02] Validar busca, edição, exclusão, formulários, desempenho acadêmico e página inicial por teclado e em viewport móvel.
-- [ ] T039 [PRD:QL-02] Executar os testes automatizados e o build configurados no projeto; corrigir falhas introduzidas pelas melhorias.
+- [x] T036 [PRD:UX-01] Revisar rótulos, hierarquia de títulos, mensagens semânticas e foco visível nas páginas `src/main/resources/templates/index.html`, `src/main/resources/templates/alunos.html`, `src/main/resources/templates/aluno-detalhes.html`, `src/main/resources/templates/aluno-form.html` e `src/main/resources/templates/nota-form.html`.
+- [x] T037 [PRD:UX-02] Verificar em `src/main/resources/static/css/style.css` e nas páginas alteradas a legibilidade em telas estreitas e o acesso às ações da tabela.
+- [x] T038 [PRD:UX-01, UX-02, QL-02] Validar busca, edição, exclusão, formulários, desempenho acadêmico e página inicial por teclado e em viewport móvel.
+- [x] T039 [PRD:QL-02] Executar os testes automatizados e o build configurados no projeto; corrigir falhas introduzidas pelas melhorias.
 
 ## Mapeamento de requisitos
 
@@ -95,4 +95,6 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - T031: testes automatizados verificam os quatro critérios, ambas as direções, pesquisa ativa, estado dos controles renderizados e preservação da ordenação após exclusão; não há navegação entre páginas enquanto a paginação estiver adiada.
 - Os limites citados devem ser confirmados na implementação existente antes de serem alterados; este backlog não propõe mudar regras acadêmicas.
 - T017: exclusão confirmada, ID inexistente e exclusão em cascata foram validados por testes automatizados. O cancelamento da confirmação não pôde ser exercitado no navegador porque a sessão já ativa em `localhost:8080` ainda serve a versão antiga; ela não foi reiniciada para evitar interrompê-la.
+- T036–T038: revisão confirmou rótulos, hierarquia de títulos, mensagens semânticas e foco visível. As regiões roláveis das tabelas agora têm nome acessível e podem receber foco; uma sequência de Tab chegou à região. CSS respeita `prefers-reduced-motion`. Fluxos de cadastro, busca, edição, notas/desempenho e exclusão confirmada/cancelada foram exercitados por teclado em navegador móvel (375 px); páginas inicial, lista e cadastro foram verificadas sem overflow a 320 px, e a lista a 1280 px.
+- T039: `mvnw verify` concluiu com sucesso: 37 testes, 0 falhas, 0 erros e 0 ignorados; build final com `BUILD SUCCESS`.
 - Marcar uma tarefa como concluída somente após implementar e verificar seu resultado.

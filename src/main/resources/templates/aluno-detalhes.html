@@ -90,7 +90,8 @@
             <p>As avaliações deste aluno aparecerão aqui.</p>
           </div>
 
-          <div class="table-wrapper" th:unless="${#lists.isEmpty(aluno.notas)}">
+          <div class="table-wrapper" role="region" aria-label="Tabela de notas do aluno"
+            tabindex="0" th:unless="${#lists.isEmpty(aluno.notas)}">
             <table>
               <caption>Notas do aluno</caption>
               <thead>

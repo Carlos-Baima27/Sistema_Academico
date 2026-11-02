@@ -33,7 +33,7 @@ jobs:
           cache: maven
 
       - name: Run backend tests
-        run: ./mvnw --batch-mode test
+        run: bash ./mvnw --batch-mode test
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

@@ -70,20 +70,20 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 
 ## Mapeamento de requisitos
 
-| Requisito | Tarefas |
-|---|---|
-| RF-01 — Buscar alunos | T004–T008 |
-| RF-02 — Filtrar por outros campos | T003 |
-| RF-03 — Editar aluno | T001, T009–T013, T018, T022 |
-| RF-04 — Excluir aluno | T002, T014–T017 |
-| RF-05 — Ordenar e paginar | T003, T027–T031 |
-| RF-06 — Apresentar desempenho acadêmico | T024–T026 |
-| RF-07 — Validar formulários e comunicar resultados | T001, T018–T023 |
-| RF-08 — Exibir indicadores na página inicial | T003, T032–T035 |
-| UX-01 — Acessibilidade | T025, T036, T038 |
-| UX-02 — Responsividade | T037–T038 |
-| QL-01 — Consistência das regras | T001, T005, T018–T020, T024, T034 |
-| QL-02 — Testabilidade | T008, T013, T017, T023, T026, T031, T035, T038–T039 |
+| Requisito                                          | Tarefas                                             |
+| -------------------------------------------------- | --------------------------------------------------- |
+| RF-01 — Buscar alunos                              | T004–T008                                           |
+| RF-02 — Filtrar por outros campos                  | T003                                                |
+| RF-03 — Editar aluno                               | T001, T009–T013, T018, T022                         |
+| RF-04 — Excluir aluno                              | T002, T014–T017                                     |
+| RF-05 — Ordenar e paginar                          | T003, T027–T031                                     |
+| RF-06 — Apresentar desempenho acadêmico            | T024–T026                                           |
+| RF-07 — Validar formulários e comunicar resultados | T001, T018–T023                                     |
+| RF-08 — Exibir indicadores na página inicial       | T003, T032–T035                                     |
+| UX-01 — Acessibilidade                             | T025, T036, T038                                    |
+| UX-02 — Responsividade                             | T037–T038                                           |
+| QL-01 — Consistência das regras                    | T001, T005, T018–T020, T024, T034                   |
+| QL-02 — Testabilidade                              | T008, T013, T017, T023, T026, T031, T035, T038–T039 |
 
 ## Observações
 
@@ -94,3 +94,5 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - Os limites citados devem ser confirmados na implementação existente antes de serem alterados; este backlog não propõe mudar regras acadêmicas.
 - T017: exclusão confirmada, ID inexistente e exclusão em cascata foram validados por testes automatizados. O cancelamento da confirmação não pôde ser exercitado no navegador porque a sessão já ativa em `localhost:8080` ainda serve a versão antiga; ela não foi reiniciada para evitar interrompê-la.
 - Marcar uma tarefa como concluída somente após implementar e verificar seu resultado.
+
+add para commit

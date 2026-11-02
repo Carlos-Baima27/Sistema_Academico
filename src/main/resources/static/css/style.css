@@ -376,6 +376,29 @@ tbody tr:hover {
   margin: 0;
 }
 
+.search-form {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sort-description {
+  padding: 1.25rem 1.5rem 0;
+}
+
+.actions-cell a {
+  margin-right: 0.6rem;
+}
+
+.actions-cell button {
+  min-height: 2.25rem;
+  padding: 0.45rem 0.7rem;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .form-card {
   max-width: 650px;
   padding: 1.75rem;
@@ -639,6 +662,15 @@ select:focus {
   }
 
   .table-wrapper {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .search-form {
+    padding: 1rem;
+  }
+
+  .sort-description {
     padding-right: 1rem;
     padding-left: 1rem;
   }

@@ -1,0 +1,9 @@
+.git
+.github
+.docs
+.vscode
+.mvn
+data
+target
+site
+*.iml

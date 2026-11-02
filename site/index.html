@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Gestão acadêmica de alunos e notas." />
+    <title>Sistema Acadêmico</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./config.js"></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="#/">
+          <span class="brand-mark" aria-hidden="true">SA</span>
+          <span>Sistema Acadêmico</span>
+        </a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a href="#/alunos">Alunos</a>
+          <a href="#/alunos/novo">Novo aluno</a>
+        </nav>
+      </header>
+      <main id="app" aria-live="polite">
+        <p class="surface empty-state">Carregando o sistema...</p>
+      </main>
+    </div>
+  </body>
+</html>

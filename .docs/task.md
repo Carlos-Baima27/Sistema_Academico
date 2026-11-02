@@ -29,7 +29,7 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - [x] T014 [PRD:RF-04] Criar uma rota web `POST` para excluir aluno em `src/main/java/com/cursojava/sistemaacademico/controller/AlunoController.java`, reutilizando `AlunoService.excluirAluno` e tratando registros inexistentes.
 - [x] T015 [PRD:RF-04] Adicionar ação de exclusão à listagem em `src/main/resources/templates/alunos.html`, usando envio `POST` e solicitando confirmação antes de enviar.
 - [x] T016 [PRD:RF-04] Exibir confirmação de sucesso ou erro após exclusão e assegurar que a listagem seja atualizada.
-- [ ] T017 [PRD:RF-04, QL-02] Testar exclusão confirmada, cancelamento no navegador, ID inexistente e comportamento das notas associadas.
+- [x] T017 [PRD:RF-04, QL-02] Testar exclusão confirmada, cancelamento no navegador, ID inexistente e comportamento das notas associadas.
 
 ## Etapa 4 — Validação e retorno dos formulários (RF-07)
 
@@ -94,7 +94,7 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - T027/T030: a paginação continua adiada; a decisão anterior de T003 permanece válida até que o volume de alunos a justifique. T030 foi avaliada como não aplicável nesta entrega. A ordenação permite nome, matrícula, média e situação em ordem crescente ou decrescente, e preserva pesquisa/ordenação ao limpar a busca ou excluir um aluno.
 - T031: testes automatizados verificam os quatro critérios, ambas as direções, pesquisa ativa, estado dos controles renderizados e preservação da ordenação após exclusão; não há navegação entre páginas enquanto a paginação estiver adiada.
 - Os limites citados devem ser confirmados na implementação existente antes de serem alterados; este backlog não propõe mudar regras acadêmicas.
-- T017: exclusão confirmada, ID inexistente e exclusão em cascata foram validados por testes automatizados. O cancelamento da confirmação não pôde ser exercitado no navegador porque a sessão já ativa em `localhost:8080` ainda serve a versão antiga; ela não foi reiniciada para evitar interrompê-la.
+- T017: exclusão confirmada e cancelada foram verificadas no navegador em uma instância isolada; ID inexistente e exclusão em cascata foram validados por testes automatizados.
 - T036–T038: revisão confirmou rótulos, hierarquia de títulos, mensagens semânticas e foco visível. As regiões roláveis das tabelas agora têm nome acessível e podem receber foco; uma sequência de Tab chegou à região. CSS respeita `prefers-reduced-motion`. Fluxos de cadastro, busca, edição, notas/desempenho e exclusão confirmada/cancelada foram exercitados por teclado em navegador móvel (375 px); páginas inicial, lista e cadastro foram verificadas sem overflow a 320 px, e a lista a 1280 px.
 - T039: `mvnw verify` concluiu com sucesso: 37 testes, 0 falhas, 0 erros e 0 ignorados; build final com `BUILD SUCCESS`.
 - Marcar uma tarefa como concluída somente após implementar e verificar seu resultado.

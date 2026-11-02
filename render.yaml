@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: sistema-academico-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/alunos
+    autoDeploy: true
+    envVars:
+      - key: APP_CORS_ALLOWED_ORIGIN
+        value: https://carlos-baima27.github.io
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: sistema-academico-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: sistema-academico-db
+          property: password
+      - key: DATABASE_HOST
+        fromDatabase:
+          name: sistema-academico-db
+          property: host
+      - key: DATABASE_PORT
+        fromDatabase:
+          name: sistema-academico-db
+          property: port
+      - key: DATABASE_NAME
+        fromDatabase:
+          name: sistema-academico-db
+          property: database
+
+databases:
+  - name: sistema-academico-db
+    databaseName: sistema_academico
+    user: sistema_academico
+    plan: free
+    region: oregon

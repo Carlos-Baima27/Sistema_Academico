@@ -1,30 +1,82 @@
 # Sistema Acadêmico
 
-Sistema para cadastro e acompanhamento de alunos, com pesquisa, ordenação, edição, exclusão e registro de notas.
+Aplicação web para gerenciamento de alunos e acompanhamento do desempenho acadêmico. A interface permite consultar e pesquisar alunos, organizar a listagem e administrar cadastros e notas.
 
-**Acesse o sistema:** [Sistema Acadêmico no GitHub Pages](https://carlos-baima27.github.io/Sistema_Academico/)
+**Acesse a aplicação:** [Sistema Acadêmico](https://carlos-baima27.github.io/Sistema_Academico/)
 
-## Publicação no GitHub Pages + Render
+## Funcionalidades
 
-A interface estática é publicada no GitHub Pages e a API Spring Boot/PostgreSQL é publicada no Render. O arquivo [Dockerfile](./Dockerfile) prepara o backend, e [render.yaml](./render.yaml) descreve o serviço e o banco de demonstração.
+- Cadastro, consulta, edição e exclusão de alunos.
+- Pesquisa de alunos por nome e ordenação por nome, matrícula, média ou situação acadêmica.
+- Cadastro e consulta de notas por aluno.
+- Cálculo e apresentação da média e da situação acadêmica.
+- Validação de dados nos formulários e na API REST.
 
-### Criar o backend no Render
+## Arquitetura
 
-1. Envie este projeto para a branch `main` do GitHub.
-2. No Render, escolha **New > Blueprint**, conecte o repositório `Carlos-Baima27/Sistema_Academico` e confirme a localização de `render.yaml`.
-3. Revise e aplique o Blueprint. Ele cria o serviço `sistema-academico-api` e um PostgreSQL gratuito para demonstração; não cria recursos até você confirmar no Render.
-4. Quando o deploy terminar, abra o serviço e copie sua URL pública HTTPS. O serviço pode levar alguns instantes para responder após ficar inativo.
+O projeto é composto por uma interface estática em `site/` e um backend em Java com Spring Boot. A interface é publicada no GitHub Pages; o backend disponibiliza a API REST e utiliza PostgreSQL na hospedagem. Em ambiente local, a configuração padrão utiliza H2.
 
-**Limitações do plano gratuito:** serviços podem entrar em suspensão por inatividade, e o banco gratuito é temporário (expira após 30 dias); não use essa configuração para dados importantes. Para manter dados, escolha um plano de PostgreSQL persistente no Render e confirme os custos antes de aplicar o Blueprint.
+O workflow do GitHub Actions executa os testes do backend e publica a interface no GitHub Pages após alterações na branch `main`. O backend e a persistência são definidos no Blueprint do Render (`render.yaml`).
 
-### Publicar a interface no GitHub Pages
+## Tecnologias
 
-1. No GitHub, abra **Settings > Secrets and variables > Actions > Variables** e crie a variável `API_BASE_URL` com a URL HTTPS do serviço Render, sem `/api` no final.
-2. Em **Settings > Pages**, selecione **GitHub Actions** como fonte de publicação.
-3. Envie as alterações para `main`. O workflow [deploy-pages.yml](./.github/workflows/deploy-pages.yml) testa o projeto e publica a interface no Pages. O workflow também pode ser executado manualmente pela aba **Actions**.
+- Java 25 e Spring Boot
+- Spring MVC, Spring Data JPA e Thymeleaf
+- H2 para desenvolvimento local e PostgreSQL para hospedagem
+- HTML, CSS e JavaScript
+- Maven e GitHub Actions
 
-O site está disponível em [carlos-baima27.github.io/Sistema_Academico](https://carlos-baima27.github.io/Sistema_Academico/). A interface está em `site/`; ela consome as rotas REST `/api/alunos` do backend. Sem o backend publicado e acessível por HTTPS, a página pode abrir, mas as operações de alunos e notas não funcionarão.
+## Executar localmente
 
-O serviço Render foi criado usando o repositório público. Nesse modo, o deploy do backend não é atualizado automaticamente quando há novos pushes; faça o deploy manualmente no Render ou configure a integração com o GitHub. A publicação do Pages continua automatizada pelo workflow.
+### Requisitos
 
-Para executar a interface localmente, sirva a pasta `site/` por um servidor HTTP e defina `apiBaseUrl` em `site/config.js` para a URL local da API. O navegador também precisa que o backend permita a origem local via `APP_CORS_ALLOWED_ORIGIN`.
+- JDK 25
+- Git
+
+### Backend
+
+Na raiz do projeto, inicie a aplicação:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+O backend ficará disponível em `http://localhost:8080`. Com a configuração padrão, o banco H2 é criado localmente em `data/`.
+
+### Interface estática
+
+A interface requer um servidor HTTP estático e uma API acessível pelo navegador. Para desenvolvimento local, configure `site/config.js` com a URL da API local:
+
+```js
+window.APP_CONFIG = { apiBaseUrl: "http://localhost:8080" };
+```
+
+Sirva os arquivos da pasta `site/` por um servidor HTTP. O backend precisa permitir a origem usada pelo servidor da interface; a propriedade `APP_CORS_ALLOWED_ORIGIN` configura essa origem.
+
+## Testes
+
+Execute a suíte automatizada e a verificação do projeto:
+
+```powershell
+.\mvnw.cmd --batch-mode clean verify
+```
+
+## API REST
+
+A API está sob o prefixo `/api/alunos`. Entre os recursos disponíveis estão:
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/api/alunos` | Lista os alunos |
+| `GET` | `/api/alunos/{id}` | Consulta um aluno |
+| `GET` | `/api/alunos/busca?nome={nome}` | Pesquisa alunos por nome |
+| `POST` | `/api/alunos` | Cadastra um aluno |
+| `PUT` | `/api/alunos/{id}` | Atualiza um aluno |
+| `DELETE` | `/api/alunos/{id}` | Exclui um aluno |
+| `GET` | `/api/alunos/{id}/notas` | Lista as notas do aluno |
+| `POST` | `/api/alunos/{id}/notas` | Cadastra uma nota |
+| `GET` | `/api/alunos/{id}/media` | Consulta média e situação acadêmica |
+
+## Publicação
+
+O site público está hospedado no GitHub Pages. A interface depende da API hospedada separadamente; portanto, as operações de consulta e manutenção de dados requerem que o backend e o banco estejam disponíveis. A variável `API_BASE_URL` do workflow define o endereço base da API usado na publicação da interface.

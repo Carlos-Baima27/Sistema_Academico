@@ -1,7 +1,6 @@
 package com.cursojava.sistemaacademico.controller;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -41,12 +40,8 @@ public class AlunoController {
         List<Aluno> alunos = new ArrayList<>(alunoService.buscarPorNome(nome));
         String criterio = normalizarCriterio(ordenarPor);
         String sentido = "desc".equalsIgnoreCase(direcao) ? "desc" : "asc";
-        Comparator<Aluno> comparador = comparadorPara(criterio)
-                .thenComparing(Aluno::getId);
-        if ("desc".equals(sentido)) {
-            comparador = comparador.reversed();
-        }
-        alunos.sort(comparador);
+        alunos.sort((alunoA, alunoB) ->
+                compararAlunos(alunoA, alunoB, criterio, sentido));
 
         model.addAttribute("alunos", alunos);
         model.addAttribute("nomePesquisado", nome == null ? "" : nome);
@@ -69,16 +64,53 @@ public class AlunoController {
         };
     }
 
-    private Comparator<Aluno> comparadorPara(String criterio) {
-        return switch (criterio) {
-            case "matricula" -> Comparator.comparing(Aluno::getMatricula,
-                    String.CASE_INSENSITIVE_ORDER);
-            case "media" -> Comparator.comparingDouble(Aluno::getMedia);
-            case "situacao" -> Comparator.comparing(Aluno::getSituacao,
-                    String.CASE_INSENSITIVE_ORDER);
-            default -> Comparator.comparing(Aluno::getNome,
-                    String.CASE_INSENSITIVE_ORDER);
-        };
+    private int compararAlunos(Aluno alunoA, Aluno alunoB, String criterio, String sentido) {
+        boolean decrescente = "desc".equals(sentido);
+        int resultado;
+        if ("matricula".equals(criterio)) {
+            resultado = compararTexto(
+                    alunoA.getMatricula(), alunoB.getMatricula(), decrescente);
+        } else if ("media".equals(criterio)) {
+            resultado = Double.compare(alunoA.getMedia(), alunoB.getMedia());
+            if (decrescente) {
+                resultado = -resultado;
+            }
+        } else if ("situacao".equals(criterio)) {
+            resultado = compararTexto(
+                    alunoA.getSituacao(), alunoB.getSituacao(), decrescente);
+        } else {
+            resultado = compararTexto(
+                    alunoA.getNome(), alunoB.getNome(), decrescente);
+        }
+
+        if (resultado != 0) {
+            return resultado;
+        }
+        return compararIds(alunoA.getId(), alunoB.getId(), decrescente);
+    }
+
+    private int compararTexto(String textoA, String textoB, boolean decrescente) {
+        if (textoA == null) {
+            return textoB == null ? 0 : 1;
+        }
+        if (textoB == null) {
+            return -1;
+        }
+
+        int resultado = String.CASE_INSENSITIVE_ORDER.compare(textoA, textoB);
+        return decrescente ? -resultado : resultado;
+    }
+
+    private int compararIds(Long idA, Long idB, boolean decrescente) {
+        if (idA == null) {
+            return idB == null ? 0 : 1;
+        }
+        if (idB == null) {
+            return -1;
+        }
+
+        int resultado = Long.compare(idA, idB);
+        return decrescente ? -resultado : resultado;
     }
 
     private String descricaoOrdenacao(String criterio, String sentido) {
@@ -111,7 +143,8 @@ public class AlunoController {
         Aluno dados = new Aluno(null, nome, email, matricula,
                 idadeConvertida == null ? 0 : idadeConvertida);
 
-        if (alunoService.dadosInvalidos(dados)) {
+        if (idadeConvertida == null || idadeConvertida <= 0
+                || alunoService.dadosInvalidos(dados)) {
             model.addAttribute("aluno", dados);
             model.addAttribute("edicao", false);
             model.addAttribute("idadeCampo", idade == null ? "" : idade);
@@ -120,7 +153,7 @@ public class AlunoController {
         }
 
         Aluno alunoCadastrado = alunoService.cadastrarAluno(nome, email,
-                matricula, idadeConvertida);
+                matricula, idadeConvertida.intValue());
 
         if (alunoCadastrado == null) {
             redirectAttributes.addFlashAttribute("mensagemErro",
@@ -165,7 +198,8 @@ public class AlunoController {
         Aluno dados = new Aluno(id, nome, email, matricula,
                 idadeConvertida == null ? 0 : idadeConvertida);
 
-        if (alunoService.dadosInvalidos(dados)) {
+        if (idadeConvertida == null || idadeConvertida <= 0
+                || alunoService.dadosInvalidos(dados)) {
             model.addAttribute("aluno", dados);
             model.addAttribute("edicao", true);
             model.addAttribute("idadeCampo", idade == null ? "" : idade);
@@ -256,7 +290,7 @@ public class AlunoController {
         Nota dados = new Nota(descricao,
                 valorConvertido == null ? Double.NaN : valorConvertido);
 
-        if (alunoService.notaInvalida(dados)) {
+        if (valorConvertido == null || alunoService.notaInvalida(dados)) {
             Map<String, String> erros = new HashMap<>();
             if (descricao == null || descricao.isBlank()) {
                 erros.put("descricao", "Informe a descrição da avaliação.");
@@ -273,7 +307,8 @@ public class AlunoController {
             return "nota-form";
         }
 
-        Nota notaCadastrada = alunoService.cadastrarNota(id, descricao, valorConvertido);
+        Nota notaCadastrada = alunoService.cadastrarNota(
+                id, descricao, valorConvertido.doubleValue());
 
         if (notaCadastrada == null) {
             redirectAttributes.addFlashAttribute("mensagemErro",

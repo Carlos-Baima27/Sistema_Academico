@@ -68,6 +68,14 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - [x] T038 [PRD:UX-01, UX-02, QL-02] Validar busca, edição, exclusão, formulários, desempenho acadêmico e página inicial por teclado e em viewport móvel.
 - [x] T039 [PRD:QL-02] Executar os testes automatizados e o build configurados no projeto; corrigir falhas introduzidas pelas melhorias.
 
+## Etapa 9 — Segurança de nulos e contratos explícitos
+
+- [x] T040 [QL-01, QL-02] Ampliar `AlunoControllerTest` com casos de idade vazia ou não numérica e nota vazia, não numérica ou fora do intervalo; verificar que os formulários preservam valores e que o serviço não é chamado com dados inválidos.
+- [x] T041 [QL-01] Tornar explícita em `AlunoController` a validação de idade e nota antes do unboxing e das chamadas a `AlunoService`, preservando mensagens e comportamento para entradas válidas.
+- [x] T042 [QL-01, QL-02] Definir e testar a ordenação de alunos com nome ou matrícula nulos: valores nulos permanecem no fim em ambas as direções e o ID mantém o desempate determinístico.
+- [x] T043 [QL-01, QL-02] Atualizar os comparadores da listagem para implementar a política de nulos e revisar o helper de teste para verificar explicitamente que a lista não contém alunos nulos.
+- [ ] T044 [QL-01, QL-02] Avaliar DTOs com Bean Validation para formulários de aluno e nota como etapa independente; só substituir a validação atual se a mudança preservar mensagens e valores retornados pelos formulários.
+
 ## Mapeamento de requisitos
 
 | Requisito                                          | Tarefas                                             |
@@ -84,6 +92,7 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 | UX-02 — Responsividade                             | T037–T038                                           |
 | QL-01 — Consistência das regras                    | T001, T005, T018–T020, T024, T034                   |
 | QL-02 — Testabilidade                              | T008, T013, T017, T023, T026, T031, T035, T038–T039 |
+| QL-01/QL-02 — Segurança de nulos e contratos       | T040–T044                                           |
 
 ## Observações
 
@@ -96,5 +105,7 @@ Lista de implementação derivada do [PRD](./prd.md). Marque uma tarefa como con
 - Os limites citados devem ser confirmados na implementação existente antes de serem alterados; este backlog não propõe mudar regras acadêmicas.
 - T017: exclusão confirmada e cancelada foram verificadas no navegador em uma instância isolada; ID inexistente e exclusão em cascata foram validados por testes automatizados.
 - T036–T038: revisão confirmou rótulos, hierarquia de títulos, mensagens semânticas e foco visível. As regiões roláveis das tabelas agora têm nome acessível e podem receber foco; uma sequência de Tab chegou à região. CSS respeita `prefers-reduced-motion`. Fluxos de cadastro, busca, edição, notas/desempenho e exclusão confirmada/cancelada foram exercitados por teclado em navegador móvel (375 px); páginas inicial, lista e cadastro foram verificadas sem overflow a 320 px, e a lista a 1280 px.
-- T039: `mvnw verify` concluiu com sucesso: 37 testes, 0 falhas, 0 erros e 0 ignorados; build final com `BUILD SUCCESS`.
+- T039/T040–T043: `mvnw clean verify` concluiu com sucesso: 40 testes, 0 falhas, 0 erros e 0 ignorados; build final com `BUILD SUCCESS`.
+- T042: valores de nome e matrícula nulos, caso ocorram em registros legados, devem ficar no fim da lista tanto na ordenação crescente quanto na decrescente; o desempate por ID acompanha o sentido da ordenação atual.
+- Após a validação Maven, o painel Problems ainda mostrou uma referência a `Comparator` que já não existe em `AlunoController`; atualize/reconstrua o projeto no editor para eliminar possíveis diagnósticos obsoletos.
 - Marcar uma tarefa como concluída somente após implementar e verificar seu resultado.

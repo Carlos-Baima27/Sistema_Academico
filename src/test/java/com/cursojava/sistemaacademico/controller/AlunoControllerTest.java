@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +31,9 @@ class AlunoControllerTest {
     private boolean falharCadastroAluno;
     private boolean falharAtualizacao;
     private boolean falharCadastroNota;
+    private int chamadasCadastroAluno;
+    private int chamadasAtualizacaoAluno;
+    private int chamadasCadastroNota;
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -52,6 +54,9 @@ class AlunoControllerTest {
         falharCadastroAluno = false;
         falharAtualizacao = false;
         falharCadastroNota = false;
+        chamadasCadastroAluno = 0;
+        chamadasAtualizacaoAluno = 0;
+        chamadasCadastroNota = 0;
         AlunoService alunoService = new AlunoService(null, null) {
             @Override
             public List<Aluno> listarTodos() {
@@ -70,6 +75,7 @@ class AlunoControllerTest {
 
             @Override
             public Aluno atualizarAluno(Long id, Aluno dados) {
+                chamadasAtualizacaoAluno++;
                 Aluno aluno = AlunoControllerTest.this.alunos.get(id);
 
                 if (aluno == null || falharAtualizacao) {
@@ -87,6 +93,7 @@ class AlunoControllerTest {
             @Override
             public Aluno cadastrarAluno(String nome, String email,
                     String matricula, int idade) {
+                chamadasCadastroAluno++;
                 if (falharCadastroAluno) {
                     return null;
                 }
@@ -98,6 +105,7 @@ class AlunoControllerTest {
 
             @Override
             public Nota cadastrarNota(Long alunoId, String descricao, double valor) {
+                chamadasCadastroNota++;
                 if (falharCadastroNota) {
                     return null;
                 }
@@ -183,6 +191,7 @@ class AlunoControllerTest {
         assertEquals("", dados.getMatricula());
         assertEquals("0", resultado.getModelAndView().getModel().get("idadeCampo"));
         assertEquals(2, alunos.size());
+        assertEquals(0, chamadasCadastroAluno);
     }
 
     @Test
@@ -201,6 +210,24 @@ class AlunoControllerTest {
         assertTrue(erros.containsKey("idade"));
         assertEquals("dezenove", resultado.getModelAndView().getModel().get("idadeCampo"));
         assertEquals(2, alunos.size());
+        assertEquals(0, chamadasCadastroAluno);
+    }
+
+    @Test
+    void idadeVaziaNoCadastroRetornaFormularioSemChamarServico() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos")
+                        .param("nome", "Carla Souza")
+                        .param("email", "carla@example.com")
+                        .param("matricula", "A003")
+                        .param("idade", ""))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals("aluno-form", resultado.getModelAndView().getViewName());
+        assertTrue(((Map<?, ?>) resultado.getModelAndView().getModel().get("erros"))
+                .containsKey("idade"));
+        assertEquals("", resultado.getModelAndView().getModel().get("idadeCampo"));
+        assertEquals(0, chamadasCadastroAluno);
     }
 
     @Test
@@ -231,6 +258,39 @@ class AlunoControllerTest {
         assertEquals(List.of(ana), resultado.getModelAndView().getModel().get("alunos"));
         assertEquals("Ana", resultado.getModelAndView().getModel().get("nomePesquisado"));
         assertTrue((Boolean) resultado.getModelAndView().getModel().get("pesquisando"));
+    }
+
+    @Test
+    void valoresNulosDeNomeEMatriculaFicamNoFimNasDuasDirecoes() throws Exception {
+        Aluno semNome = new Aluno(3L, null, "sem-nome@example.com", "A000", 19);
+        Aluno semMatricula = new Aluno(4L, "Zeca Lima", "zeca@example.com", null, 19);
+        Aluno matriculaEmpatada = new Aluno(5L, "Ana Silva", "ana2@example.com", "A001", 19);
+        alunos.put(semNome.getId(), semNome);
+        alunos.put(semMatricula.getId(), semMatricula);
+        alunos.put(matriculaEmpatada.getId(), matriculaEmpatada);
+
+        MvcResult nomeCrescente = mockMvc.perform(get("/alunos").param("ordenarPor", "nome"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MvcResult nomeDecrescente = mockMvc.perform(get("/alunos")
+                        .param("ordenarPor", "nome")
+                        .param("direcao", "desc"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MvcResult matriculaCrescente = mockMvc.perform(get("/alunos")
+                        .param("ordenarPor", "matricula"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MvcResult matriculaDecrescente = mockMvc.perform(get("/alunos")
+                        .param("ordenarPor", "matricula")
+                        .param("direcao", "desc"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertIds(nomeCrescente, 1L, 5L, 2L, 4L, 3L);
+        assertIds(nomeDecrescente, 4L, 2L, 5L, 1L, 3L);
+        assertIds(matriculaCrescente, 3L, 1L, 5L, 2L, 4L);
+        assertIds(matriculaDecrescente, 2L, 5L, 1L, 3L, 4L);
     }
 
     @Test
@@ -396,6 +456,7 @@ class AlunoControllerTest {
         assertEquals("0", resultado.getModelAndView().getModel().get("idadeCampo"));
         assertEquals("Ana Silva", ana.getNome());
         assertEquals(20, ana.getIdade());
+        assertEquals(0, chamadasAtualizacaoAluno);
     }
 
     @Test
@@ -449,6 +510,7 @@ class AlunoControllerTest {
         assertEquals("", resultado.getModelAndView().getModel().get("descricao"));
         assertEquals("10.1", resultado.getModelAndView().getModel().get("valorCampo"));
         assertTrue(ana.getNotas().isEmpty());
+        assertEquals(0, chamadasCadastroNota);
     }
 
     @Test
@@ -481,6 +543,22 @@ class AlunoControllerTest {
         assertTrue(((Map<?, ?>) resultado.getModelAndView().getModel().get("erros"))
                 .containsKey("valor"));
         assertTrue(ana.getNotas().isEmpty());
+        assertEquals(0, chamadasCadastroNota);
+    }
+
+    @Test
+    void notaVaziaRetornaFormularioSemChamarServico() throws Exception {
+        MvcResult resultado = mockMvc.perform(post("/alunos/1/notas")
+                        .param("descricao", "Prova final")
+                        .param("valor", ""))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals("nota-form", resultado.getModelAndView().getViewName());
+        assertTrue(((Map<?, ?>) resultado.getModelAndView().getModel().get("erros"))
+                .containsKey("valor"));
+        assertEquals("", resultado.getModelAndView().getModel().get("valorCampo"));
+        assertEquals(0, chamadasCadastroNota);
     }
 
     @Test
@@ -546,9 +624,21 @@ class AlunoControllerTest {
 
     private List<String> nomesDaLista(MvcResult resultado) {
         List<?> lista = (List<?>) resultado.getModelAndView().getModel().get("alunos");
-        return lista.stream()
-                .map(Aluno.class::cast)
-                .map(Aluno::getNome)
-                .collect(Collectors.toList());
+        List<String> nomes = new ArrayList<>(lista.size());
+        for (Object item : lista) {
+            assertTrue(item instanceof Aluno, "A lista não deve conter alunos nulos.");
+            nomes.add(((Aluno) item).getNome());
+        }
+        return nomes;
+    }
+
+    private void assertIds(MvcResult resultado, Long... ids) {
+        List<?> lista = (List<?>) resultado.getModelAndView().getModel().get("alunos");
+        List<Long> actual = new ArrayList<>(lista.size());
+        for (Object item : lista) {
+            assertTrue(item instanceof Aluno, "A lista não deve conter alunos nulos.");
+            actual.add(((Aluno) item).getId());
+        }
+        assertEquals(List.of(ids), actual);
     }
 }

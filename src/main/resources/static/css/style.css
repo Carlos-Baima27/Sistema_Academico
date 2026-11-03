@@ -425,6 +425,12 @@ label {
   font-weight: 700;
 }
 
+.field-hint {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
 input,
 select {
   width: 100%;

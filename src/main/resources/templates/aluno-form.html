@@ -61,13 +61,16 @@
 
             <div class="form-field">
               <label for="matricula">Matrícula</label>
-              <input id="matricula" type="text" name="matricula"
-                th:value="${aluno.matricula}" required
-                th:attr="aria-invalid=${erros != null and erros.containsKey('matricula')},
-                  aria-describedby=${erros != null and erros.containsKey('matricula') ? 'matricula-error' : null}" />
-              <p class="field-error" id="matricula-error" role="alert"
-                th:if="${erros != null and erros.containsKey('matricula')}"
-                th:text="${erros['matricula']}"></p>
+              <input id="matricula" type="text" th:if="${edicao}"
+                th:value="${aluno.matricula}" readonly />
+              <input id="matricula" type="text" th:unless="${edicao}"
+                value="Gerada após o cadastro" readonly />
+              <p class="field-hint" th:if="${edicao}">
+                A matrícula é gerada automaticamente e não pode ser alterada.
+              </p>
+              <p class="field-hint" th:unless="${edicao}">
+                Será gerada automaticamente no formato AAAA-0001.
+              </p>
             </div>
 
             <div class="form-field">

@@ -7,6 +7,7 @@ Aplicação web para gerenciamento de alunos e acompanhamento do desempenho acad
 ## Funcionalidades
 
 - Cadastro, consulta, edição e exclusão de alunos.
+- Geração automática de matrículas anuais no formato `AAAA-0001`.
 - Pesquisa de alunos por nome e ordenação por nome, matrícula, média ou situação acadêmica.
 - Cadastro e consulta de notas por aluno.
 - Cálculo e apresentação da média e da situação acadêmica.
@@ -17,6 +18,8 @@ Aplicação web para gerenciamento de alunos e acompanhamento do desempenho acad
 O projeto é composto por uma interface estática em `site/` e um backend em Java com Spring Boot. A interface é publicada no GitHub Pages; o backend disponibiliza a API REST e utiliza PostgreSQL na hospedagem. Em ambiente local, a configuração padrão utiliza H2.
 
 O workflow do GitHub Actions executa os testes do backend e publica a interface no GitHub Pages após alterações na branch `main`. O backend e a persistência são definidos no Blueprint do Render (`render.yaml`).
+
+As matrículas são geradas pelo backend no formato `AAAA-0001`, com sequência reiniciada a cada ano. Na primeira inicialização após a atualização, as matrículas já existentes são renumeradas em ordem de ID; os IDs dos alunos e suas notas são preservados.
 
 ## Tecnologias
 

@@ -126,7 +126,7 @@ public class AlunoController {
 
     @GetMapping("/alunos/novo")
     public String formularioAluno(Model model) {
-        model.addAttribute("aluno", new Aluno(null, "", "", "", 0));
+        model.addAttribute("aluno", new Aluno(null, "", "", null, 0));
         model.addAttribute("edicao", false);
         model.addAttribute("idadeCampo", "");
         return "aluno-form";
@@ -135,12 +135,11 @@ public class AlunoController {
     @PostMapping("/alunos")
     public String cadastrarAluno(@RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String matricula,
             @RequestParam(required = false) String idade,
             Model model,
             RedirectAttributes redirectAttributes) {
         Integer idadeConvertida = converterIdade(idade);
-        Aluno dados = new Aluno(null, nome, email, matricula,
+        Aluno dados = new Aluno(null, nome, email, null,
                 idadeConvertida == null ? 0 : idadeConvertida);
 
         if (idadeConvertida == null || idadeConvertida <= 0
@@ -152,8 +151,8 @@ public class AlunoController {
             return "aluno-form";
         }
 
-        Aluno alunoCadastrado = alunoService.cadastrarAluno(nome, email,
-                matricula, idadeConvertida.intValue());
+        Aluno alunoCadastrado = alunoService.cadastrarAluno(
+                nome, email, idadeConvertida.intValue());
 
         if (alunoCadastrado == null) {
             redirectAttributes.addFlashAttribute("mensagemErro",
@@ -184,7 +183,6 @@ public class AlunoController {
     public String atualizarAluno(@PathVariable Long id,
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String matricula,
             @RequestParam(required = false) String idade,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -195,7 +193,7 @@ public class AlunoController {
         }
 
         Integer idadeConvertida = converterIdade(idade);
-        Aluno dados = new Aluno(id, nome, email, matricula,
+        Aluno dados = new Aluno(id, nome, email, null,
                 idadeConvertida == null ? 0 : idadeConvertida);
 
         if (idadeConvertida == null || idadeConvertida <= 0
@@ -352,9 +350,6 @@ public class AlunoController {
         }
         if (aluno.getEmail() == null || aluno.getEmail().isBlank()) {
             erros.put("email", "Informe um e-mail.");
-        }
-        if (aluno.getMatricula() == null || aluno.getMatricula().isBlank()) {
-            erros.put("matricula", "Informe a matrícula.");
         }
         if (idadeConvertida == null || idadeConvertida <= 0) {
             erros.put("idade", "Informe uma idade válida maior que zero.");

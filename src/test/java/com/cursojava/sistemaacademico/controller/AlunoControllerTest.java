@@ -2,15 +2,18 @@ package com.cursojava.sistemaacademico.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +60,7 @@ class AlunoControllerTest {
         chamadasCadastroAluno = 0;
         chamadasAtualizacaoAluno = 0;
         chamadasCadastroNota = 0;
-        AlunoService alunoService = new AlunoService(null, null) {
+        AlunoService alunoService = new AlunoService(null, null, null, null) {
             @Override
             public List<Aluno> listarTodos() {
                 return new ArrayList<>(AlunoControllerTest.this.alunos.values());
@@ -84,21 +87,20 @@ class AlunoControllerTest {
 
                 aluno.setNome(dados.getNome());
                 aluno.setEmail(dados.getEmail());
-                aluno.setMatricula(dados.getMatricula());
                 aluno.setIdade(dados.getIdade());
 
                 return aluno;
             }
 
             @Override
-            public Aluno cadastrarAluno(String nome, String email,
-                    String matricula, int idade) {
+            public Aluno cadastrarAluno(String nome, String email, int idade) {
                 chamadasCadastroAluno++;
                 if (falharCadastroAluno) {
                     return null;
                 }
 
-                Aluno aluno = new Aluno(3L, nome, email, matricula, idade);
+                Aluno aluno = new Aluno(3L, nome, email,
+                        String.format(Locale.ROOT, "%d-%04d", Year.now().getValue(), 3L), idade);
                 AlunoControllerTest.this.alunos.put(aluno.getId(), aluno);
                 return aluno;
             }
@@ -157,7 +159,7 @@ class AlunoControllerTest {
         MvcResult resultado = mockMvc.perform(post("/alunos")
                         .param("nome", "Carla Souza")
                         .param("email", "carla@example.com")
-                        .param("matricula", "A003")
+                        .param("matricula", "MATRICULA-ESCOLHIDA")
                         .param("idade", "19"))
                 .andExpect(status().isOk())
                 .andExpect(flash().attribute("mensagemSucesso",
@@ -166,6 +168,8 @@ class AlunoControllerTest {
 
         assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
         assertEquals("Carla Souza", alunos.get(3L).getNome());
+        assertEquals(String.format(Locale.ROOT, "%d-%04d", Year.now().getValue(), 3L),
+                alunos.get(3L).getMatricula());
     }
 
     @Test
@@ -184,11 +188,11 @@ class AlunoControllerTest {
         assertEquals("aluno-form", resultado.getModelAndView().getViewName());
         assertTrue(erros.containsKey("nome"));
         assertTrue(erros.containsKey("email"));
-        assertTrue(erros.containsKey("matricula"));
+        assertFalse(erros.containsKey("matricula"));
         assertTrue(erros.containsKey("idade"));
         assertEquals("", dados.getNome());
         assertEquals("", dados.getEmail());
-        assertEquals("", dados.getMatricula());
+        assertNull(dados.getMatricula());
         assertEquals("0", resultado.getModelAndView().getModel().get("idadeCampo"));
         assertEquals(2, alunos.size());
         assertEquals(0, chamadasCadastroAluno);
@@ -433,7 +437,7 @@ class AlunoControllerTest {
         assertEquals("redirect:/alunos", resultado.getModelAndView().getViewName());
         assertEquals("Ana Souza", ana.getNome());
         assertEquals("ana.souza@example.com", ana.getEmail());
-        assertEquals("A010", ana.getMatricula());
+        assertEquals("A001", ana.getMatricula());
         assertEquals(22, ana.getIdade());
     }
 

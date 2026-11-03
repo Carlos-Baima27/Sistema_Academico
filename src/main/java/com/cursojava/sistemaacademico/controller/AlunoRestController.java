@@ -81,7 +81,6 @@ public class AlunoRestController {
         Aluno alunoCadastrado = alunoService.cadastrarAluno(
                 aluno.getNome(),
                 aluno.getEmail(),
-                aluno.getMatricula(),
                 aluno.getIdade());
 
         return ResponseEntity

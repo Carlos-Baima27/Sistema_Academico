@@ -189,7 +189,8 @@ async function renderStudentForm(id) {
         <div class="form-field form-field-full"><label for="email">E-mail</label>
           <input id="email" name="email" type="email" autocomplete="email" value="${escapeHtml(aluno.email)}" required /></div>
         <div class="form-field"><label for="matricula">Matrícula</label>
-          <input id="matricula" name="matricula" type="text" value="${escapeHtml(aluno.matricula)}" required /></div>
+          <input id="matricula" type="text" value="${editing ? escapeHtml(aluno.matricula) : "Gerada após o cadastro"}" readonly />
+          <p class="field-hint">${editing ? "A matrícula é gerada automaticamente e não pode ser alterada." : "Será gerada automaticamente no formato AAAA-0001."}</p></div>
         <div class="form-field"><label for="idade">Idade</label>
           <input id="idade" name="idade" type="number" min="1" value="${escapeHtml(aluno.idade)}" required /></div>
       </div>

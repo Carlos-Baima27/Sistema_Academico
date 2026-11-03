@@ -67,7 +67,8 @@ class AcademicPerformancePresentationTest {
 
     private void assertPresentesNosTemplates(
             Aluno aluno, String media, String situacao, String classeSituacao) {
-        AlunoRestController api = new AlunoRestController(new AlunoService(null, null) {
+        AlunoRestController api = new AlunoRestController(
+                new AlunoService(null, null, null, null) {
             @Override
             public Aluno buscarPorId(Long id) {
                 return aluno;

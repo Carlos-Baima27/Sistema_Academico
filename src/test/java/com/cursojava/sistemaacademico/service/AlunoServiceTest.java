@@ -10,7 +10,7 @@ import com.cursojava.sistemaacademico.model.Nota;
 
 class AlunoServiceTest {
 
-    private final AlunoService alunoService = new AlunoService(null, null);
+    private final AlunoService alunoService = new AlunoService(null, null, null, null);
 
     @Test
     void idadeDeveSerMaiorQueZero() {
